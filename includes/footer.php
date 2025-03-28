@@ -1,11 +1,11 @@
         </main>
 
         <!-- Footer -->
-        <footer class="bg-secondary text-gray-800 py-16">
+        <footer class="bg-dark-olive text-white py-16">
             <div class="container mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     <div class="col-span-1 lg:col-span-2" data-aos="fade-up" data-aos-duration="1000">
-                        <h3 class="text-2xl font-bold mb-4">Pulpy Garden Sdn Bhd</h3>
+                        <h3 class="text-2xl font-bold mb-4 text-white">Pulpy Garden Sdn Bhd</h3>
                         <p class="text-lg mb-4">Make the garden of your dream with us!</p>
                         <p class="text-lg mb-4">
                             Call us today: 
@@ -47,7 +47,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="mt-12 pt-6 border-t border-gray-300" data-aos="fade-up" data-aos-duration="800">
+                <div class="mt-12 pt-6 border-t border-gray-300 border-opacity-30" data-aos="fade-up" data-aos-duration="800">
                     <p class="text-sm text-center">
                         &copy; <span class="copyright-year"></span> Movement Studio. All Rights Reserved.
                         <a href="privacy-policy.php" class="hover:text-primary ml-2">Privacy Policy</a>
@@ -58,7 +58,7 @@
     </div>
 
     <!-- Global Output -->
-    <div id="snackbar" class="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-lg opacity-0 transition-opacity duration-300 z-50"></div>
+    <div id="snackbar" class="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-dark-olive text-white px-6 py-3 rounded-lg opacity-0 transition-opacity duration-300 z-50"></div>
 
     <!-- Image Modal -->
     <div id="image-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden">

@@ -17,6 +17,18 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     <!-- Styles -->
     <script src="/Bonsai/assets/dist/styles.bundle.js"></script>
+    <style>
+        .btn-primary {
+            background-color: #E58356;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #d36e43;
+        }
+    </style>
 </head>
 <body class="bg-white text-gray-800 flex flex-col min-h-screen">
     <!-- Page loader -->
@@ -27,23 +39,23 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <!-- Page -->
     <div class="flex flex-col min-h-screen">
         <!-- Header -->
-        <header class="bg-white py-4 transition-all duration-300">
+        <header class="bg-dark-olive py-4 transition-all duration-300">
             <div class="container mx-auto">
                 <div class="flex items-center justify-between">
                     <!-- Logo -->
                     <a href="index.php" class="flex items-center" data-aos="fade-right" data-aos-duration="1000">
-                        <img src="/Bonsai/Images/About us/Sejuta Ranting.PNG" alt="Sejuta Ranting" class="h-10 md:h-12">
+                        <img src="/Bonsai/Images/About us/Sejuta Ranting.PNG" alt="Sejuta Ranting" class="h-14 md:h-16">
                     </a>
 
                     <!-- Mobile menu button -->
-                    <button id="mobile-menu-toggle" class="md:hidden flex items-center p-2">
+                    <button id="mobile-menu-toggle" class="md:hidden flex items-center p-2 text-white">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
                     </button>
 
                     <!-- Desktop Navigation -->
-                    <nav class="hidden md:flex items-center space-x-8" data-aos="fade-left" data-aos-duration="1000">
+                    <nav class="hidden md:flex items-center space-x-8 text-white" data-aos="fade-left" data-aos-duration="1000">
                         <a href="index.php" class="<?php echo $current_page == 'index.php' ? 'text-primary font-bold' : 'hover:text-primary'; ?>">
                             Home
                         </a>
@@ -58,8 +70,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                 </svg>
                             </a>
                             <div class="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-lg hidden group-hover:block z-10">
-                                <a href="services.php" class="block px-4 py-2 hover:bg-gray-100">Services</a>
-                                <a href="single-service.php" class="block px-4 py-2 hover:bg-gray-100">Single Service</a>
+                                <a href="services.php" class="block px-4 py-2 text-olive-dark hover:bg-gray-100">Services</a>
+                                <a href="single-service.php" class="block px-4 py-2 text-olive-dark hover:bg-gray-100">Single Service</a>
                             </div>
                         </div>
                         <a href="portfolio.php" class="<?php echo $current_page == 'portfolio.php' ? 'text-primary font-bold' : 'hover:text-primary'; ?>">
@@ -75,18 +87,18 @@ $current_page = basename($_SERVER['PHP_SELF']);
                             <div class="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-lg hidden group-hover:block z-10">
                                 <div class="grid grid-cols-2 gap-2 p-4">
                                     <div>
-                                        <p class="font-bold mb-2 text-sm">Special Pages</p>
-                                        <a href="404-page.php" class="block py-1 text-sm hover:text-primary">404 Page</a>
-                                        <a href="search-results.php" class="block py-1 text-sm hover:text-primary">Search Results</a>
-                                        <a href="privacy-policy.php" class="block py-1 text-sm hover:text-primary">Privacy Policy</a>
-                                        <a href="accordion.php" class="block py-1 text-sm hover:text-primary">Accordion</a>
+                                        <p class="font-bold mb-2 text-sm text-olive-dark">Special Pages</p>
+                                        <a href="404-page.php" class="block py-1 text-sm text-olive-dark hover:text-primary">404 Page</a>
+                                        <a href="search-results.php" class="block py-1 text-sm text-olive-dark hover:text-primary">Search Results</a>
+                                        <a href="privacy-policy.php" class="block py-1 text-sm text-olive-dark hover:text-primary">Privacy Policy</a>
+                                        <a href="accordion.php" class="block py-1 text-sm text-olive-dark hover:text-primary">Accordion</a>
                                     </div>
                                     <div>
-                                        <p class="font-bold mb-2 text-sm">Elements</p>
-                                        <a href="buttons.php" class="block py-1 text-sm hover:text-primary">Buttons</a>
-                                        <a href="typography.php" class="block py-1 text-sm hover:text-primary">Typography</a>
-                                        <a href="tabs.php" class="block py-1 text-sm hover:text-primary">Tabs</a>
-                                        <a href="contact-forms.php" class="block py-1 text-sm hover:text-primary">Contact Forms</a>
+                                        <p class="font-bold mb-2 text-sm text-olive-dark">Elements</p>
+                                        <a href="buttons.php" class="block py-1 text-sm text-olive-dark hover:text-primary">Buttons</a>
+                                        <a href="typography.php" class="block py-1 text-sm text-olive-dark hover:text-primary">Typography</a>
+                                        <a href="tabs.php" class="block py-1 text-sm text-olive-dark hover:text-primary">Tabs</a>
+                                        <a href="contact-forms.php" class="block py-1 text-sm text-olive-dark hover:text-primary">Contact Forms</a>
                                     </div>
                                 </div>
                             </div>
@@ -105,7 +117,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
                 <!-- Mobile Navigation -->
                 <div id="mobile-menu" class="md:hidden mt-4 pb-4 hidden">
-                    <nav class="flex flex-col space-y-3">
+                    <nav class="flex flex-col space-y-3 text-white">
                         <a href="index.php" class="<?php echo $current_page == 'index.php' ? 'text-primary font-bold' : ''; ?> py-2">
                             Home
                         </a>

@@ -84,14 +84,14 @@ function project_card(array $args) {
     
     // Content section
     $html .= '<div class="md:w-1/2 flex flex-col justify-center"' . $animation_content_attr . '>';
-    $html .= '<h3 class="text-2xl font-bold mb-4">' . $title . '</h3>';
-    $html .= '<p class="text-gray-600 mb-6">' . $description . '</p>';
+    $html .= '<h3 class="text-2xl font-bold mb-4 text-dark-olive">' . $title . '</h3>';
+    $html .= '<p class="text-olive-dark mb-6">' . $description . '</p>';
     
     // Project details
     $html .= '<ul class="space-y-2 mb-6">';
-    $html .= '<li class="flex"><span class="font-semibold w-24">Location:</span><span class="text-gray-600">' . $location . '</span></li>';
-    $html .= '<li class="flex"><span class="font-semibold w-24">Project:</span><span class="text-gray-600">' . $project_type . '</span></li>';
-    $html .= '<li class="flex"><span class="font-semibold w-24">Designer:</span><span class="text-gray-600">' . $designer . '</span></li>';
+    $html .= '<li class="flex"><span class="font-semibold w-24 text-dark-olive">Location:</span><span class="text-olive-dark">' . $location . '</span></li>';
+    $html .= '<li class="flex"><span class="font-semibold w-24 text-dark-olive">Project:</span><span class="text-olive-dark">' . $project_type . '</span></li>';
+    $html .= '<li class="flex"><span class="font-semibold w-24 text-dark-olive">Designer:</span><span class="text-olive-dark">' . $designer . '</span></li>';
     $html .= '</ul>';
     
     $html .= '<a href="portfolio.php" class="text-primary font-semibold hover:underline inline-flex items-center">';

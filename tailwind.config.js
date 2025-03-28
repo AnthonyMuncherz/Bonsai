@@ -9,14 +9,19 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'primary': '#546A7B',
-        'secondary': '#F4F6F8',
-        'accent': '#98C379',
+        'primary': '#E58356',
+        'secondary': '#E9EFD6',
+        'dark-olive': '#4D5D2A',
+        'olive-light': '#F3F6E9',
+        'olive-dark': '#525B31',
       },
       fontFamily: {
         'sans': ['Mulish', 'sans-serif'],
         'serif': ['Volkhov', 'serif'],
       },
+      backgroundColor: {
+        'hero': '#F3F6E9',
+      }
     },
   },
   plugins: [],

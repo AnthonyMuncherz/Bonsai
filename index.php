@@ -6,12 +6,12 @@ require_once 'components/project-card.php';
 ?>
 
 <!-- Hero Section -->
-<section class="bg-secondary py-16 md:py-24">
+<section class="bg-hero py-16 md:py-24">
     <div class="container mx-auto">
         <div class="flex flex-col md:flex-row items-center">
             <div class="md:w-1/2 md:pr-12 mb-8 md:mb-0" data-aos="fade-right" data-aos-duration="1000">
-                <h1 class="text-4xl md:text-5xl font-bold mb-6">The Art and Benefits of Bonsai</h1>
-                <p class="text-lg mb-8">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 text-dark-olive">The Art and Benefits of Bonsai</h1>
+                <p class="text-lg mb-8 text-olive-dark">
                     Welcome to Sejuta Ranting, Malaysia's premier platform for exploring the captivating world of Bonsai. Here, we celebrate the artistry, heritage, and therapeutic essence of Bonsai cultivation, tailored to Malaysia's unique tropical environment. Let us inspire you with the knowledge and tools to nurture miniature trees that bring harmony and beauty into your life.
                 </p>
                 <a href="about.php" class="btn btn-primary inline-flex items-center">
@@ -35,8 +35,8 @@ require_once 'components/project-card.php';
     <div class="container mx-auto">
         <div class="text-center mb-12" data-aos="fade-up" data-aos-duration="1000">
             <span class="text-primary font-semibold uppercase tracking-wider">Services</span>
-            <h2 class="text-3xl md:text-4xl font-bold mt-2 mb-4">Sejuta Ranting's Bonsai Gallery</h2>
-            <p class="max-w-2xl mx-auto text-gray-600">
+            <h2 class="text-3xl md:text-4xl font-bold mt-2 mb-4 text-dark-olive">Sejuta Ranting's Bonsai Gallery</h2>
+            <p class="max-w-2xl mx-auto text-olive-dark">
                 At Sejuta Ranting, we offer a diverse range of Bonsai-related services to help you cultivate and appreciate the timeless beauty of Bonsai trees. Here are some of the most popular services and resources we provide to enthusiasts across Malaysia.
             </p>
         </div>
@@ -80,12 +80,12 @@ require_once 'components/project-card.php';
         <div class="flex flex-col md:flex-row">
             <div class="md:w-1/2 mb-8 md:mb-0" data-aos="zoom-in-right" data-aos-duration="1000">
                 <span class="text-primary font-semibold uppercase tracking-wider">About us</span>
-                <h2 class="text-3xl md:text-4xl font-bold mt-2 mb-4">Pulpy Garden Sdn Bhd</h2>
+                <h2 class="text-3xl md:text-4xl font-bold mt-2 mb-4 text-dark-olive">Pulpy Garden Sdn Bhd</h2>
             </div>
             <div class="md:w-1/2" data-aos="zoom-in-left" data-aos-duration="1000" data-aos-delay="200">
-                <h3 class="text-xl md:text-2xl font-bold mb-6">Founded in 2024, we are dedicated to promoting the beauty and benefits of Bonsai cultivation in Malaysia. Our mission is to inspire harmony between people and nature through the art of Bonsai.</h3>
-                <p class="mb-4">Pulpy Garden Sdn Bhd is your trusted partner in Bonsai care and education. We believe that cultivating Bonsai trees not only enhances your space but also nurtures mindfulness and patience.</p>
-                <p class="mb-6">Our holistic approach allows us to offer high-quality resources, tools, and guidance tailored to Malaysia's tropical environment. Whether you're a beginner or an experienced Bonsai enthusiast.</p>
+                <h3 class="text-xl md:text-2xl font-bold mb-6 text-olive-dark">Founded in 2024, we are dedicated to promoting the beauty and benefits of Bonsai cultivation in Malaysia. Our mission is to inspire harmony between people and nature through the art of Bonsai.</h3>
+                <p class="mb-4 text-olive-dark">Pulpy Garden Sdn Bhd is your trusted partner in Bonsai care and education. We believe that cultivating Bonsai trees not only enhances your space but also nurtures mindfulness and patience.</p>
+                <p class="mb-6 text-olive-dark">Our holistic approach allows us to offer high-quality resources, tools, and guidance tailored to Malaysia's tropical environment. Whether you're a beginner or an experienced Bonsai enthusiast.</p>
                 <a href="about.php" class="btn btn-primary inline-flex items-center">
                     Read more
                     <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -102,7 +102,7 @@ require_once 'components/project-card.php';
     <div class="container mx-auto">
         <div class="mb-16" data-aos="fade-up" data-aos-duration="1000">
             <span class="text-primary font-semibold uppercase tracking-wider">our projects</span>
-            <h2 class="text-3xl md:text-4xl font-bold mt-2 text-primary">Exquisite Bonsai Creations for Everyone</h2>
+            <h2 class="text-3xl md:text-4xl font-bold mt-2 text-dark-olive">Exquisite Bonsai Creations for Everyone</h2>
         </div>
 
         <?php
@@ -152,8 +152,8 @@ require_once 'components/project-card.php';
 </section>
 
 <!-- Testimonial Section -->
-<section class="bg-black py-16 md:py-24 mb-1 relative z-50">
-    <div class="absolute inset-0 opacity-70 bg-cover bg-center" style="background-image: url('/Bonsai/Images/Index/tree-dark-background.jpg');"></div>
+<section class="bg-dark-olive py-16 md:py-24 mb-1 relative z-50">
+    <div class="absolute inset-0 opacity-60 bg-cover bg-center" style="background-image: url('/Bonsai/Images/Index/tree-dark-background.jpg');"></div>
     <div class="container mx-auto relative z-10">
         <div class="max-w-3xl mx-auto text-center text-white" data-aos="zoom-in" data-aos-duration="1200">
             <svg class="mx-auto mb-8 opacity-30 w-16 h-16" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

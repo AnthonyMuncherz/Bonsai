@@ -62,8 +62,8 @@ function service_card(array $args) {
     $html .= '<div class="absolute top-4 left-4 bg-primary text-white text-xl font-bold rounded-full w-10 h-10 flex items-center justify-center">' . $number . '</div>';
     $html .= '</div>';
     $html .= '<div class="p-6">';
-    $html .= '<h3 class="text-xl font-bold mb-3">' . $title . '</h3>';
-    $html .= '<p class="text-gray-600 mb-4">' . $description . '</p>';
+    $html .= '<h3 class="text-xl font-bold mb-3 text-dark-olive">' . $title . '</h3>';
+    $html .= '<p class="text-olive-dark mb-4">' . $description . '</p>';
     
     if (!empty($link)) {
         $html .= '<a href="' . $link . '" class="text-primary font-semibold hover:underline inline-flex items-center">';

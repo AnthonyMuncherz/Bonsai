@@ -1,5 +1,6 @@
 <?php
 $page_title = 'Home';
+require_once 'includes/db.php';
 require_once 'includes/header.php';
 require_once 'components/service-card.php';
 require_once 'components/project-card.php';

@@ -42,5 +42,30 @@ if (!$tableExists) {
     echo "Books table already exists.<br>";
 }
 
+// Check if cart table exists
+$result = $db->query("SELECT name FROM sqlite_master WHERE type='table' AND name='cart'");
+$cartTableExists = $result->fetchArray();
+
+if (!$cartTableExists) {
+    echo "Creating cart table...<br>";
+    
+    // Create cart table
+    $db->exec("
+        CREATE TABLE cart (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            book_id INTEGER NOT NULL,
+            quantity INTEGER NOT NULL DEFAULT 1,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            FOREIGN KEY (book_id) REFERENCES books(id)
+        )
+    ");
+    
+    echo "Cart table created successfully!<br>";
+} else {
+    echo "Cart table already exists.<br>";
+}
+
 echo "<p>Click <a href='catalogue.php'>here</a> to go to the catalogue.</p>";
 ?> 

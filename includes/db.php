@@ -42,6 +42,19 @@ function get_db_connection() {
                 )
             ");
             
+            // Create cart table
+            $db->exec("
+                CREATE TABLE cart (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER NOT NULL,
+                    book_id INTEGER NOT NULL,
+                    quantity INTEGER NOT NULL DEFAULT 1,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (user_id) REFERENCES users(id),
+                    FOREIGN KEY (book_id) REFERENCES books(id)
+                )
+            ");
+            
             // Insert sample books data
             $db->exec("
                 INSERT INTO books (title, author, description, price, image, category, stock) 

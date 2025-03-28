@@ -100,7 +100,7 @@ if ($user && is_array($user)) {
                                 </div>
                             </a>
                             
-                            <a href="#" class="bg-white p-4 border rounded-lg flex items-center hover:shadow-md transition-shadow">
+                            <a href="cart.php" class="bg-white p-4 border rounded-lg flex items-center hover:shadow-md transition-shadow">
                                 <div class="bg-primary bg-opacity-10 p-3 rounded-full mr-4">
                                     <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>

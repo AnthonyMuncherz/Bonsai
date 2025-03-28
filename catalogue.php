@@ -150,7 +150,7 @@ $result = $stmt->execute();
                                 <p class="text-gray-600 mb-4">by <?php echo htmlspecialchars($book['author']); ?></p>
                             </div>
                             <span class="bg-primary text-white px-3 py-1 rounded-full text-sm">
-                                $<?php echo number_format($book['price'], 2); ?>
+                                RM<?php echo number_format($book['price'], 2); ?>
                             </span>
                         </div>
                         
@@ -165,9 +165,12 @@ $result = $stmt->execute();
                                 <?php endif; ?>
                             </span>
                             
-                            <a href="#" class="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark transition">
-                                Add to Cart
-                            </a>
+                            <form action="add_to_cart.php" method="POST">
+                                <input type="hidden" name="book_id" value="<?php echo $book['id']; ?>">
+                                <button type="submit" class="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark transition" <?php echo $book['stock'] <= 0 ? 'disabled' : ''; ?>>
+                                    Add to Cart
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

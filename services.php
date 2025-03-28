@@ -1,24 +1,24 @@
 <?php
-$page_title = 'Services';
+$page_title = 'Books & Services';
 require_once 'includes/header.php';
 require_once 'components/breadcrumbs.php';
 require_once 'components/service-card.php';
 
 echo breadcrumbs([
     'Home' => 'index.php',
-    'Services' => ''
-], '/Bonsai/Images/Index/tree-dark-background.jpg', 'Our Services');
+    'Books & Services' => ''
+], '/Bonsai/Images/Index/tree-dark-background.jpg', 'Our Books & Services');
 ?>
 
 <!-- Services Introduction -->
 <section class="py-16">
     <div class="container mx-auto">
         <div class="text-center max-w-3xl mx-auto mb-16">
-            <h2 class="text-3xl font-bold mb-6">Comprehensive Bonsai Services</h2>
+            <h2 class="text-3xl font-bold mb-6">Comprehensive Bonsai Book Collection</h2>
             <p class="text-gray-600">
-                At Sejuta Ranting, we offer a wide range of professional bonsai services designed to help you nurture, 
-                maintain, and appreciate these living works of art. Whether you're a beginner just starting your bonsai 
-                journey or an experienced enthusiast looking to expand your collection, we have services tailored to meet your needs.
+                At Sejuta Ranting, we offer a wide range of bonsai books and educational resources designed to help you 
+                master the art of bonsai cultivation. Whether you're a beginner just starting your bonsai 
+                journey or an experienced enthusiast looking to refine your techniques, we have the perfect books to guide your path.
             </p>
         </div>
 
@@ -26,50 +26,50 @@ echo breadcrumbs([
             <?php
             echo service_card([
                 'number' => '01',
-                'title' => 'Bonsai Design & Styling',
-                'description' => 'Our expert bonsai artists can help design and style your tree to create the perfect living art piece for your space.',
+                'title' => 'Beginner Guides',
+                'description' => 'Start your bonsai journey with our collection of beginner-friendly books covering essential care, basic styling, and species selection.',
                 'image' => '/Bonsai/Images/Index/IMG_6171.JPG',
-                'link' => 'single-service.php?service=design'
+                'link' => 'single-service.php?service=beginner'
             ]);
             
             echo service_card([
                 'number' => '02',
-                'title' => 'Bonsai Maintenance',
-                'description' => 'Regular maintenance services to keep your bonsai healthy, including pruning, wiring, repotting, and seasonal care.',
+                'title' => 'Styling & Technique Books',
+                'description' => 'Enhance your bonsai styling skills with comprehensive guides on pruning, wiring, repotting, and artistic design principles.',
                 'image' => '/Bonsai/Images/Index/IMG_6168.JPG',
-                'link' => 'single-service.php?service=maintenance'
+                'link' => 'single-service.php?service=styling'
             ]);
             
             echo service_card([
                 'number' => '03',
-                'title' => 'Bonsai Workshops',
-                'description' => 'Learn the art of bonsai through our hands-on workshops for beginners and advanced enthusiasts.',
+                'title' => 'Species-Specific Guides',
+                'description' => 'Specialized books focusing on particular bonsai species, with detailed care instructions tailored to their unique requirements.',
                 'image' => '/Bonsai/Images/Index/IMG_6179.JPG',
-                'link' => 'single-service.php?service=workshops'
+                'link' => 'single-service.php?service=species'
             ]);
             
             echo service_card([
                 'number' => '04',
-                'title' => 'Custom Bonsai Creation',
-                'description' => 'Commission a custom bonsai design for your home, office, or as a special gift for someone.',
+                'title' => 'Tropical Bonsai Collection',
+                'description' => 'Books specifically focused on tropical bonsai varieties suitable for Malaysia\'s climate, including native Southeast Asian species.',
                 'image' => '/Bonsai/Images/Index/IMG_6177.JPG',
-                'link' => 'single-service.php?service=custom'
+                'link' => 'single-service.php?service=tropical'
             ]);
             
             echo service_card([
                 'number' => '05',
-                'title' => 'Bonsai Health Consultation',
-                'description' => 'Expert advice and solutions for bonsai health issues, pest control, and disease management.',
+                'title' => 'Advanced Practitioner Texts',
+                'description' => 'Sophisticated resources for experienced enthusiasts, covering advanced techniques, problem-solving, and artistic refinement.',
                 'image' => '/Bonsai/Images/Index/IMG_6174.JPG',
-                'link' => 'single-service.php?service=health'
+                'link' => 'single-service.php?service=advanced'
             ]);
             
             echo service_card([
                 'number' => '06',
-                'title' => 'Bonsai Garden Design',
-                'description' => 'Create a harmonious bonsai garden display with our professional design and installation services.',
+                'title' => 'Bonsai Journal & Planners',
+                'description' => 'Track your bonsai development with our selection of specialized journals, maintenance planners, and record-keeping guides.',
                 'image' => '/Bonsai/Images/Index/IMG_6169.JPG',
-                'link' => 'single-service.php?service=garden'
+                'link' => 'single-service.php?service=journals'
             ]);
             ?>
         </div>
@@ -80,9 +80,9 @@ echo breadcrumbs([
 <section class="bg-gray-50 py-16">
     <div class="container mx-auto">
         <div class="text-center mb-16">
-            <h2 class="text-3xl font-bold mb-6">Our Service Process</h2>
+            <h2 class="text-3xl font-bold mb-6">Our Bookstore Services</h2>
             <p class="text-gray-600 max-w-3xl mx-auto">
-                We follow a systematic approach to deliver high-quality bonsai services tailored to your needs.
+                Beyond our book collection, we offer several services to enhance your bonsai learning experience.
             </p>
         </div>
 
@@ -92,9 +92,9 @@ echo breadcrumbs([
                 <div class="bg-primary text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                     <span class="text-xl font-bold">01</span>
                 </div>
-                <h3 class="text-xl font-bold mb-2">Consultation</h3>
+                <h3 class="text-xl font-bold mb-2">Nationwide Delivery</h3>
                 <p class="text-gray-600">
-                    We begin with a thorough consultation to understand your bonsai goals and requirements.
+                    We offer fast and reliable shipping to all locations across Malaysia. Penghantaran kilat kemana-mana!
                 </p>
             </div>
             
@@ -103,9 +103,9 @@ echo breadcrumbs([
                 <div class="bg-primary text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                     <span class="text-xl font-bold">02</span>
                 </div>
-                <h3 class="text-xl font-bold mb-2">Assessment</h3>
+                <h3 class="text-xl font-bold mb-2">Book Consultations</h3>
                 <p class="text-gray-600">
-                    Our experts assess your bonsai's health, style, and potential for development.
+                    Not sure which book is right for you? Our knowledgeable staff can provide personalized recommendations.
                 </p>
             </div>
             
@@ -114,9 +114,9 @@ echo breadcrumbs([
                 <div class="bg-primary text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                     <span class="text-xl font-bold">03</span>
                 </div>
-                <h3 class="text-xl font-bold mb-2">Implementation</h3>
+                <h3 class="text-xl font-bold mb-2">Special Orders</h3>
                 <p class="text-gray-600">
-                    We carefully execute the agreed-upon plan, whether styling, maintenance, or education.
+                    We can source rare and specialized bonsai books that aren't in our regular inventory upon request.
                 </p>
             </div>
             
@@ -125,9 +125,9 @@ echo breadcrumbs([
                 <div class="bg-primary text-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                     <span class="text-xl font-bold">04</span>
                 </div>
-                <h3 class="text-xl font-bold mb-2">Follow-up</h3>
+                <h3 class="text-xl font-bold mb-2">Book Club</h3>
                 <p class="text-gray-600">
-                    We provide aftercare guidance and ongoing support to ensure your bonsai thrives.
+                    Join our monthly bonsai book club where we discuss techniques, share experiences, and learn together.
                 </p>
             </div>
         </div>
@@ -137,13 +137,13 @@ echo breadcrumbs([
 <!-- Call to Action -->
 <section class="py-16 bg-primary text-white">
     <div class="container mx-auto text-center">
-        <h2 class="text-3xl font-bold mb-6">Ready to Transform Your Bonsai Experience?</h2>
+        <h2 class="text-3xl font-bold mb-6">Ready to Elevate Your Bonsai Knowledge?</h2>
         <p class="max-w-3xl mx-auto mb-8">
-            Contact us today to discuss how our bonsai services can help you create and maintain beautiful living art.
+            Browse our collection today or contact us for personalized book recommendations to help you on your bonsai journey.
         </p>
         <div class="flex flex-col sm:flex-row justify-center gap-4">
             <a href="contacts.php" class="btn bg-white text-primary hover:bg-gray-100">Contact Us</a>
-            <a href="portfolio.php" class="btn border-2 border-white text-white hover:bg-white hover:text-primary">View Our Portfolio</a>
+            <a href="portfolio.php" class="btn border-2 border-white text-white hover:bg-white hover:text-primary">View Our Collection</a>
         </div>
     </div>
 </section>

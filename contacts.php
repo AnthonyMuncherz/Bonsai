@@ -17,9 +17,9 @@ echo breadcrumbs([
             <div>
                 <h2 class="text-3xl font-bold mb-6">Get in Touch</h2>
                 <p class="text-gray-600 mb-8">
-                    We'd love to hear from you! Whether you have questions about our bonsai services, 
-                    need advice on caring for your bonsai, or want to collaborate with us, 
-                    please feel free to reach out using the contact information below.
+                    We'd love to hear from you! Whether you have questions about our bonsai book collection, 
+                    need recommendations for your skill level, want to check book availability, or 
+                    are interested in placing a special order, please feel free to reach out using the contact information below.
                 </p>
                 
                 <div class="space-y-6">
@@ -32,9 +32,9 @@ echo breadcrumbs([
                         <div>
                             <h3 class="text-lg font-semibold mb-2">Address</h3>
                             <address class="not-italic text-gray-600">
+                                Sejuta Ranting Bookstore,<br>
                                 Slate @The Row, 48, Jalan Doraisamy,<br>
-                                Chow Kit, 50300 Kuala Lumpur,<br>
-                                Wilayah Persekutuan Kuala Lumpur
+                                Chow Kit, 50300 Kuala Lumpur
                             </address>
                         </div>
                     </div>
@@ -63,7 +63,7 @@ echo breadcrumbs([
                         <div>
                             <h3 class="text-lg font-semibold mb-2">Email</h3>
                             <p class="text-gray-600">
-                                <a href="mailto:pulpygarden@gmail.com" class="hover:text-primary">pulpygarden@gmail.com</a>
+                                <a href="mailto:info@sejutaranting.my" class="hover:text-primary">info@sejutaranting.my</a>
                             </p>
                         </div>
                     </div>
@@ -75,11 +75,11 @@ echo breadcrumbs([
                             </svg>
                         </div>
                         <div>
-                            <h3 class="text-lg font-semibold mb-2">Business Hours</h3>
+                            <h3 class="text-lg font-semibold mb-2">Store Hours</h3>
                             <p class="text-gray-600">
-                                Monday - Friday: 9:00 AM - 6:00 PM<br>
-                                Saturday: 10:00 AM - 4:00 PM<br>
-                                Sunday: Closed
+                                Monday - Friday: 10:00 AM - 7:00 PM<br>
+                                Saturday: 10:00 AM - 5:00 PM<br>
+                                Sunday: 12:00 PM - 4:00 PM
                             </p>
                         </div>
                     </div>
@@ -88,7 +88,7 @@ echo breadcrumbs([
             
             <!-- Contact Form -->
             <div class="bg-gray-50 p-8 rounded-lg">
-                <h2 class="text-3xl font-bold mb-6">Send Us a Message</h2>
+                <h2 class="text-3xl font-bold mb-6">Book Inquiry</h2>
                 
                 <form action="#" method="POST" class="space-y-6">
                     <div>
@@ -102,8 +102,15 @@ echo breadcrumbs([
                     </div>
                     
                     <div>
-                        <label for="subject" class="block text-gray-700 font-medium mb-2">Subject</label>
-                        <input type="text" id="subject" name="subject" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                        <label for="subject" class="block text-gray-700 font-medium mb-2">Inquiry Type</label>
+                        <select id="subject" name="subject" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                            <option value="">Please select...</option>
+                            <option value="book-availability">Book Availability</option>
+                            <option value="recommendation">Book Recommendation</option>
+                            <option value="special-order">Special Order Request</option>
+                            <option value="shipping">Shipping Question</option>
+                            <option value="other">Other</option>
+                        </select>
                     </div>
                     
                     <div>
@@ -112,7 +119,7 @@ echo breadcrumbs([
                     </div>
                     
                     <div>
-                        <button type="submit" class="btn btn-primary w-full">Send Message</button>
+                        <button type="submit" class="btn btn-primary w-full">Send Inquiry</button>
                     </div>
                 </form>
             </div>
@@ -123,7 +130,7 @@ echo breadcrumbs([
 <!-- Map Section -->
 <section class="py-16 bg-gray-50">
     <div class="container mx-auto">
-        <h2 class="text-3xl font-bold mb-8 text-center">Our Location</h2>
+        <h2 class="text-3xl font-bold mb-8 text-center">Visit Our Bookstore</h2>
         <div class="w-full h-96 rounded-lg overflow-hidden">
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3983.7502497812303!2d101.69681931470738!3d3.1647210536927134!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cc4839e2aec055%3A0xa65a18e15c0ff6ec!2sSlate%20%40%20The%20Row!5e0!3m2!1sen!2smy!4v1648454720652!5m2!1sen!2smy" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>

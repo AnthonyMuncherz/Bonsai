@@ -67,7 +67,7 @@ function service_card(array $args) {
     
     if (!empty($link)) {
         $html .= '<a href="' . $link . '" class="text-primary font-semibold hover:underline inline-flex items-center">';
-        $html .= 'Learn more';
+        $html .= 'View Book Details';
         $html .= '<svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">';
         $html .= '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>';
         $html .= '</svg>';

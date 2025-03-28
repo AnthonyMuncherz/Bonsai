@@ -10,12 +10,12 @@ require_once 'components/project-card.php';
     <div class="container mx-auto">
         <div class="flex flex-col md:flex-row items-center">
             <div class="md:w-1/2 md:pr-12 mb-8 md:mb-0" data-aos="fade-right" data-aos-duration="1000">
-                <h1 class="text-4xl md:text-5xl font-bold mb-6 text-dark-olive">The Art and Benefits of Bonsai</h1>
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 text-dark-olive">Sejuta Ranting Bonsai Books</h1>
                 <p class="text-lg mb-8 text-olive-dark">
-                    Welcome to Sejuta Ranting, Malaysia's premier platform for exploring the captivating world of Bonsai. Here, we celebrate the artistry, heritage, and therapeutic essence of Bonsai cultivation, tailored to Malaysia's unique tropical environment. Let us inspire you with the knowledge and tools to nurture miniature trees that bring harmony and beauty into your life.
+                    Welcome to Sejuta Ranting, Malaysia's premier bonsai bookstore. Discover our carefully curated collection of guides, how-tos, and artistic references that will help you master the ancient art of bonsai cultivation. From pemula (beginner) to pakar (expert), we have the perfect resource for your bonsai journey. Jom explore our collection and let the knowledge grow like your little pokok!
                 </p>
                 <a href="about.php" class="btn btn-primary inline-flex items-center">
-                    Read more
+                    Explore Our Collection
                     <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
@@ -34,10 +34,10 @@ require_once 'components/project-card.php';
 <section class="py-16 md:py-24">
     <div class="container mx-auto">
         <div class="text-center mb-12" data-aos="fade-up" data-aos-duration="1000">
-            <span class="text-primary font-semibold uppercase tracking-wider">Services</span>
-            <h2 class="text-3xl md:text-4xl font-bold mt-2 mb-4 text-dark-olive">Sejuta Ranting's Bonsai Gallery</h2>
+            <span class="text-primary font-semibold uppercase tracking-wider">Featured Books</span>
+            <h2 class="text-3xl md:text-4xl font-bold mt-2 mb-4 text-dark-olive">Our Bestselling Bonsai Guides</h2>
             <p class="max-w-2xl mx-auto text-olive-dark">
-                At Sejuta Ranting, we offer a diverse range of Bonsai-related services to help you cultivate and appreciate the timeless beauty of Bonsai trees. Here are some of the most popular services and resources we provide to enthusiasts across Malaysia.
+                At Sejuta Ranting, we offer a diverse range of bonsai books to help you nurture and master the art of bonsai cultivation. From beginner guides to advanced techniques, our collection is curated to inspire your bonsai journey. Mesti try these bestsellers!
             </p>
         </div>
 
@@ -45,8 +45,8 @@ require_once 'components/project-card.php';
             <?php
             echo service_card([
                 'number' => '01',
-                'title' => 'Decorating',
-                'description' => 'Our decorating & painting services will help you transform your house and protect it against weather.',
+                'title' => 'Bonsai Basics',
+                'description' => 'By Colin Lewis - The perfect introduction for beginners, this comprehensive guide covers essential techniques with over 200 full-color photos.',
                 'image' => '/Bonsai/Images/Index/IMG_6171.JPG',
                 'link' => 'single-service.php',
                 'delay' => 0
@@ -54,8 +54,8 @@ require_once 'components/project-card.php';
             
             echo service_card([
                 'number' => '02',
-                'title' => 'Garden design',
-                'description' => 'We design custom-made gardens and outdoor spaces that work for you, your family, and your lifestyle.',
+                'title' => 'The Complete Book of Bonsai',
+                'description' => 'By Harry Tomlinson - A timeless masterpiece exploring the art and cultivation of bonsai with detailed illustrations and step-by-step instructions.',
                 'image' => '/Bonsai/Images/Index/IMG_6168.JPG',
                 'link' => 'single-service.php',
                 'delay' => 100
@@ -63,8 +63,8 @@ require_once 'components/project-card.php';
             
             echo service_card([
                 'number' => '03',
-                'title' => 'Project planning',
-                'description' => 'You can fully rely on our professional project planning services that guarantee the best results.',
+                'title' => 'Bonsai with Malaysian Species',
+                'description' => 'By Peter Chan - Discover how to cultivate bonsai using native Malaysian tree species, tailored specifically for our tropical climate.',
                 'image' => '/Bonsai/Images/Index/IMG_6179.JPG',
                 'link' => 'single-service.php',
                 'delay' => 200
@@ -80,14 +80,14 @@ require_once 'components/project-card.php';
         <div class="flex flex-col md:flex-row">
             <div class="md:w-1/2 mb-8 md:mb-0" data-aos="zoom-in-right" data-aos-duration="1000">
                 <span class="text-primary font-semibold uppercase tracking-wider">About us</span>
-                <h2 class="text-3xl md:text-4xl font-bold mt-2 mb-4 text-dark-olive">Pulpy Garden Sdn Bhd</h2>
+                <h2 class="text-3xl md:text-4xl font-bold mt-2 mb-4 text-dark-olive">Sejuta Ranting Bookstore</h2>
             </div>
             <div class="md:w-1/2" data-aos="zoom-in-left" data-aos-duration="1000" data-aos-delay="200">
-                <h3 class="text-xl md:text-2xl font-bold mb-6 text-olive-dark">Founded in 2024, we are dedicated to promoting the beauty and benefits of Bonsai cultivation in Malaysia. Our mission is to inspire harmony between people and nature through the art of Bonsai.</h3>
-                <p class="mb-4 text-olive-dark">Pulpy Garden Sdn Bhd is your trusted partner in Bonsai care and education. We believe that cultivating Bonsai trees not only enhances your space but also nurtures mindfulness and patience.</p>
-                <p class="mb-6 text-olive-dark">Our holistic approach allows us to offer high-quality resources, tools, and guidance tailored to Malaysia's tropical environment. Whether you're a beginner or an experienced Bonsai enthusiast.</p>
+                <h3 class="text-xl md:text-2xl font-bold mb-6 text-olive-dark">Founded in 2024, we are dedicated to promoting the beauty and benefits of Bonsai cultivation in Malaysia through high-quality literature and resources.</h3>
+                <p class="mb-4 text-olive-dark">Sejuta Ranting (meaning "Thousand Branches") is your trusted partner in bonsai education. We believe that access to quality information is the foundation for successful bonsai cultivation.</p>
+                <p class="mb-6 text-olive-dark">Our bookstore features carefully selected titles from renowned bonsai masters worldwide, with special focus on resources tailored to Malaysia's tropical environment. We ship seluruh Malaysia with kecepatan kilat! Betul betul best!</p>
                 <a href="about.php" class="btn btn-primary inline-flex items-center">
-                    Read more
+                    Learn Our Story
                     <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
@@ -101,40 +101,40 @@ require_once 'components/project-card.php';
 <section class="py-16 md:py-24">
     <div class="container mx-auto">
         <div class="mb-16" data-aos="fade-up" data-aos-duration="1000">
-            <span class="text-primary font-semibold uppercase tracking-wider">our projects</span>
-            <h2 class="text-3xl md:text-4xl font-bold mt-2 text-dark-olive">Exquisite Bonsai Creations for Everyone</h2>
+            <span class="text-primary font-semibold uppercase tracking-wider">Book Categories</span>
+            <h2 class="text-3xl md:text-4xl font-bold mt-2 text-dark-olive">Explore Our Bonsai Book Collection</h2>
         </div>
 
         <?php
         echo project_card([
-            'title' => 'Bonsai Haven Project',
-            'description' => 'One of our recent highlights is the creation of a tranquil Bonsai garden, blending traditional Bonsai cultivation techniques with innovative landscaping designs to inspire harmony and mindfulness.',
+            'title' => 'Beginner Guides',
+            'description' => 'Start your bonsai journey with our selection of beginner-friendly guides. These books provide step-by-step instructions for selecting your first bonsai, basic care techniques, and simple styling tips perfect for newcomers.',
             'image' => '/Bonsai/Images/Index/IMG_6177.JPG',
-            'location' => 'Pulpy Garden, Kuala Lumpur',
-            'project_type' => 'Bonsai Showcase',
-            'designer' => 'Shazriq Azrin bin Senawi',
+            'location' => 'For Beginners',
+            'project_type' => 'Starter Collection',
+            'designer' => 'Various Authors',
             'reverse' => false,
             'delay' => 0
         ]);
         
         echo project_card([
-            'title' => 'Serenity Bonsai Garden',
-            'description' => 'This project was designed for a small residential area in Kuala Lumpur, Malaysia. It features a beautifully curated Bonsai garden, combining traditional techniques with modern landscaping aesthetics to create a serene and peaceful outdoor space.',
+            'title' => 'Advanced Techniques',
+            'description' => 'Elevate your bonsai skills with our advanced technique collection. These comprehensive books cover complex styling methods, advanced wiring techniques, grafting, and specialized care information for experienced enthusiasts.',
             'image' => '/Bonsai/Images/Index/IMG_6169.JPG',
-            'location' => 'Kuala Lumpur, Malaysia',
-            'project_type' => 'Bonsai Styling and Garden Design',
-            'designer' => 'Shazriq Azrin bin Senawi',
+            'location' => 'For Experienced Enthusiasts',
+            'project_type' => 'Advanced Collection',
+            'designer' => 'Master Bonsai Artists',
             'reverse' => true,
             'delay' => 100
         ]);
         
         echo project_card([
-            'title' => 'Harmony Bonsai Sanctuary',
-            'description' => 'For this award-winning project by Pulpy Garden, we crafted a tranquil Bonsai retreat designed to complement the natural surroundings and evoke a sense of timeless elegance. The space integrates traditional Bonsai techniques with modern landscaping to create a peaceful haven for relaxation and mindfulness.',
+            'title' => 'Tropical Species Guides',
+            'description' => 'Our specially curated collection of books focusing on tropical bonsai varieties perfect for Malaysia\'s climate. Learn how to collect, cultivate and style indigenous species with guidance from local and international experts.',
             'image' => '/Bonsai/Images/Index/IMG_6174.JPG',
-            'location' => 'Kuala Lumpur, Malaysia',
-            'project_type' => 'Bonsai Landscaping and Design',
-            'designer' => 'Musthaqim Ahmad',
+            'location' => 'Malaysia & Southeast Asia',
+            'project_type' => 'Regional Specialty',
+            'designer' => 'Tropical Bonsai Experts',
             'reverse' => false,
             'delay' => 200
         ]);
@@ -142,7 +142,7 @@ require_once 'components/project-card.php';
 
         <div class="text-center mt-8" data-aos="fade-up" data-aos-duration="1000">
             <a href="portfolio.php" class="btn btn-primary inline-flex items-center">
-                More projects
+                View All Categories
                 <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                 </svg>
@@ -160,11 +160,11 @@ require_once 'components/project-card.php';
                 <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
             </svg>
             <p class="text-xl md:text-2xl mb-8 italic">
-                The team at Pulpy Garden is incredibly knowledgeable, friendly, and detail-oriented. They listened to our ideas and transformed them into a breathtaking Bonsai garden. Every detail was meticulously planned, and the final result exceeded our expectations.
+                The selection of bonsai books at Sejuta Ranting is incredible! As a beginner, I was overwhelmed at first, but their staff recommended the perfect guide for me. The book was detailed yet easy to understand, and now my first bonsai is thriving. Best bonsai resource in KL, hands down. Memang terbaik!
             </p>
             <div data-aos="fade-up" data-aos-delay="300" data-aos-duration="800">
                 <h3 class="text-xl font-bold">Badrul Adam</h3>
-                <p class="text-gray-300">Client</p>
+                <p class="text-gray-300">Satisfied Customer</p>
             </div>
         </div>
     </div>

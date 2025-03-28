@@ -17,13 +17,13 @@ echo breadcrumbs([
             <div data-aos="fade-right" data-aos-duration="1000">
                 <h3 class="text-2xl font-bold mb-4">Our Mission</h3>
                 <p class="text-gray-600">
-                    Our mission at The Art and Benefits of Bonsai is to inspire Malaysians by promoting the rich heritage and therapeutic benefits of Bonsai cultivation, providing education tailored to Malaysia's tropical environment, fostering a vibrant community of Bonsai enthusiasts, and encouraging sustainable gardening practices to preserve this living art form for future generations.
+                    Our mission at Sejuta Ranting is to cultivate a thriving bonsai community in Malaysia by providing accessible, high-quality literature and educational resources. We aim to promote the rich heritage of bonsai cultivation through carefully curated books and guides tailored to Malaysia's tropical environment, helping enthusiasts at all levels develop their skills and appreciation for this living art form.
                 </p>
             </div>
             <div data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
                 <h3 class="text-2xl font-bold mb-4">Our Vision</h3>
                 <p class="text-gray-600">
-                    Our vision is to become Malaysia's leading platform for Bonsai cultivation, inspiring a deep appreciation for the art of Bonsai while fostering a harmonious connection between people and nature. We aspire to create a community where tradition meets innovation, making Bonsai a cherished part of every Malaysian's life.
+                    Our vision is to become Malaysia's leading resource for bonsai knowledge, bridging traditional wisdom with contemporary practices through our specialized bookstore. We aspire to create a hub where bonsai enthusiasts can find inspiration, guidance, and community, making quality information accessible to everyone and preserving this art form for future generations. Sejuta Ranting bukanlah sekadar kedai buku, tapi rumah untuk semua pencinta bonsai!
                 </p>
             </div>
         </div>
@@ -41,9 +41,9 @@ echo breadcrumbs([
                         <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
                     </svg>
                 </div>
-                <h4 class="text-xl font-bold mb-3">Years of Experience</h4>
+                <h4 class="text-xl font-bold mb-3">Curated Selection</h4>
                 <p class="text-gray-600">
-                    Bring years of passion and dedication to cultivating and sharing this timeless tradition.
+                    Every book in our collection is carefully chosen for accuracy, quality, and relevance to Malaysian bonsai enthusiasts.
                 </p>
             </div>
             
@@ -54,9 +54,9 @@ echo breadcrumbs([
                         <path d="M5 4a1 1 0 00-2 0v7.268a2 2 0 000 3.464V16a1 1 0 102 0v-1.268a2 2 0 000-3.464V4zM11 4a1 1 0 10-2 0v1.268a2 2 0 000 3.464V16a1 1 0 102 0V8.732a2 2 0 000-3.464V4zM16 3a1 1 0 011 1v7.268a2 2 0 010 3.464V16a1 1 0 11-2 0v-1.268a2 2 0 010-3.464V4a1 1 0 011-1z"></path>
                     </svg>
                 </div>
-                <h4 class="text-xl font-bold mb-3">Creative Approach</h4>
+                <h4 class="text-xl font-bold mb-3">Knowledge Sharing</h4>
                 <p class="text-gray-600">
-                    Embrace a creative approach by combining traditional Bonsai cultivation techniques with modern design and technology.
+                    We're committed to democratizing bonsai knowledge through accessible resources for enthusiasts of all experience levels.
                 </p>
             </div>
             
@@ -67,9 +67,9 @@ echo breadcrumbs([
                         <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
                     </svg>
                 </div>
-                <h4 class="text-xl font-bold mb-3">Customer-Oriented Service</h4>
+                <h4 class="text-xl font-bold mb-3">Community Focus</h4>
                 <p class="text-gray-600">
-                    Customer-oriented experience by prioritizing the needs and interests of our audience.
+                    Beyond being a bookstore, we foster a community where bonsai enthusiasts can connect, learn, and grow together. Jom join us!
                 </p>
             </div>
         </div>

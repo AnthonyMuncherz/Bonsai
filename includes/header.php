@@ -80,10 +80,29 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         <a href="contacts.php" class="<?php echo $current_page == 'contacts.php' ? 'text-primary font-bold' : 'hover:text-primary'; ?>">
                             Contacts
                         </a>
-                        <div class="flex space-x-3">
-                            <a href="#" class="btn btn-primary">Login</a>
-                            <a href="#" class="btn bg-white text-primary hover:bg-gray-100">Register</a>
-                        </div>
+                        
+                        <?php if(isset($_SESSION['user_id'])): ?>
+                            <div class="relative group">
+                                <a href="#" class="flex items-center hover:text-primary">
+                                    <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </a>
+                                <div class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg hidden group-hover:block z-10">
+                                    <a href="dashboard.php" class="block px-4 py-2 text-olive-dark hover:bg-gray-100">Dashboard</a>
+                                    <?php if($_SESSION['is_admin']): ?>
+                                        <a href="admin.php" class="block px-4 py-2 text-olive-dark hover:bg-gray-100">Admin Panel</a>
+                                    <?php endif; ?>
+                                    <a href="logout.php" class="block px-4 py-2 text-olive-dark hover:bg-gray-100">Logout</a>
+                                </div>
+                            </div>
+                        <?php else: ?>
+                            <div class="flex space-x-3">
+                                <a href="login.php" class="btn btn-primary">Login</a>
+                                <a href="register.php" class="btn bg-white text-primary hover:bg-gray-100">Register</a>
+                            </div>
+                        <?php endif; ?>
                     </nav>
                 </div>
 
@@ -114,10 +133,29 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         <a href="contacts.php" class="<?php echo $current_page == 'contacts.php' ? 'text-primary font-bold' : ''; ?> py-2">
                             Contacts
                         </a>
-                        <div class="flex flex-col space-y-2">
-                            <a href="#" class="btn btn-primary">Login</a>
-                            <a href="#" class="btn bg-white text-primary">Register</a>
-                        </div>
+                        
+                        <?php if(isset($_SESSION['user_id'])): ?>
+                            <div class="py-2">
+                                <div class="flex items-center justify-between cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
+                                    <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                                <div class="hidden ml-4 mt-2 space-y-2">
+                                    <a href="dashboard.php" class="block py-1">Dashboard</a>
+                                    <?php if($_SESSION['is_admin']): ?>
+                                        <a href="admin.php" class="block py-1">Admin Panel</a>
+                                    <?php endif; ?>
+                                    <a href="logout.php" class="block py-1">Logout</a>
+                                </div>
+                            </div>
+                        <?php else: ?>
+                            <div class="flex flex-col space-y-2 mt-2">
+                                <a href="login.php" class="btn btn-primary">Login</a>
+                                <a href="register.php" class="btn bg-white text-primary">Register</a>
+                            </div>
+                        <?php endif; ?>
                     </nav>
                 </div>
             </div>

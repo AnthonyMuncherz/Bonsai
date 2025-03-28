@@ -13,6 +13,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <link rel="icon" href="/Bonsai/Images/Index/Sejuta Ranting.png" type="image/x-icon">
     <!-- Google Fonts -->
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400&amp;family=Volkhov:wght@400;700&amp;display=swap">
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     <!-- Styles -->
     <script src="/Bonsai/assets/dist/styles.bundle.js"></script>
 </head>
@@ -29,7 +31,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <div class="container mx-auto">
                 <div class="flex items-center justify-between">
                     <!-- Logo -->
-                    <a href="index.php" class="flex items-center">
+                    <a href="index.php" class="flex items-center" data-aos="fade-right" data-aos-duration="1000">
                         <img src="/Bonsai/Images/About us/Sejuta Ranting.PNG" alt="Sejuta Ranting" class="h-10 md:h-12">
                     </a>
 
@@ -41,7 +43,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     </button>
 
                     <!-- Desktop Navigation -->
-                    <nav class="hidden md:flex items-center space-x-8">
+                    <nav class="hidden md:flex items-center space-x-8" data-aos="fade-left" data-aos-duration="1000">
                         <a href="index.php" class="<?php echo $current_page == 'index.php' ? 'text-primary font-bold' : 'hover:text-primary'; ?>">
                             Home
                         </a>

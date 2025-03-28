@@ -4,7 +4,7 @@
         <footer class="bg-secondary text-gray-800 py-16">
             <div class="container mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    <div class="col-span-1 lg:col-span-2">
+                    <div class="col-span-1 lg:col-span-2" data-aos="fade-up" data-aos-duration="1000">
                         <h3 class="text-2xl font-bold mb-4">Pulpy Garden Sdn Bhd</h3>
                         <p class="text-lg mb-4">Make the garden of your dream with us!</p>
                         <p class="text-lg mb-4">
@@ -14,7 +14,7 @@
                             </a>
                         </p>
                     </div>
-                    <div>
+                    <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
                         <p class="text-sm uppercase font-semibold mb-4">Address</p>
                         <address class="not-italic text-sm mb-4">
                             <a href="https://maps.app.goo.gl/5tJ5JZzQtE2xCZJd6" class="hover:text-primary" target="_blank">
@@ -29,7 +29,7 @@
                             </a>
                         </p>
                     </div>
-                    <div>
+                    <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
                         <p class="text-sm uppercase font-semibold mb-4">Social Media</p>
                         <ul class="space-y-2">
                             <li>
@@ -47,7 +47,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="mt-12 pt-6 border-t border-gray-300">
+                <div class="mt-12 pt-6 border-t border-gray-300" data-aos="fade-up" data-aos-duration="800">
                     <p class="text-sm text-center">
                         &copy; <span class="copyright-year"></span> Movement Studio. All Rights Reserved.
                         <a href="privacy-policy.php" class="hover:text-primary ml-2">Privacy Policy</a>
@@ -74,5 +74,7 @@
 
     <!-- Scripts -->
     <script src="/Bonsai/assets/dist/main.bundle.js"></script>
+    <!-- AOS Script -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </body>
 </html> 

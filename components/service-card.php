@@ -10,6 +10,8 @@
  *   'description' => 'Our decorating & painting services...',
  *   'image' => '/Bonsai/Images/Index/IMG_6171.JPG',
  *   'link' => 'single-service.php',
+ *   'animation' => 'fade-up', // Optional: AOS animation type
+ *   'delay' => 0, // Optional: AOS delay in ms
  * ]);
  */
 
@@ -26,6 +28,8 @@ function service_card(array $args) {
         'description' => 'Service description goes here.',
         'image' => '',
         'link' => 'single-service.php',
+        'animation' => 'flip-left',
+        'delay' => 0,
     ];
     
     $args = array_merge($defaults, $args);
@@ -35,8 +39,20 @@ function service_card(array $args) {
     $description = $args['description'];
     $image = $args['image'];
     $link = $args['link'];
+    $animation = $args['animation'];
+    $delay = $args['delay'];
     
-    $html = '<div class="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl">';
+    // Build animation attributes
+    $animation_attr = '';
+    if (!empty($animation)) {
+        $animation_attr .= ' data-aos="' . $animation . '"';
+        if ($delay > 0) {
+            $animation_attr .= ' data-aos-delay="' . $delay . '"';
+        }
+        $animation_attr .= ' data-aos-duration="1000"';
+    }
+    
+    $html = '<div class="service-item bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl"' . $animation_attr . '>';
     $html .= '<div class="relative overflow-hidden">';
     
     if (!empty($image)) {

@@ -1,4 +1,10 @@
 // Main TypeScript file for Sejuta Ranting Bonsai website
+// AOS is loaded via script tag in footer, so we don't need to import it here
+// import AOS from 'aos';
+// import 'aos/dist/aos.css';
+
+// Declare AOS as a global variable since it's loaded via script tag
+declare const AOS: any;
 
 // Hide page loader when page is loaded
 window.addEventListener('load', () => {
@@ -41,39 +47,91 @@ function initFadeAnimations() {
   }
 }
 
-// Mobile navigation toggle
+// Initialize AOS with custom settings
 document.addEventListener('DOMContentLoaded', () => {
-  const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
+  // Initialize AOS if it exists (loaded via script tag)
+  if (typeof AOS !== 'undefined') {
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: false,
+      mirror: true,
+      offset: 50
+    });
+  }
   
-  if (mobileMenuToggle && mobileMenu) {
-    mobileMenuToggle.addEventListener('click', () => {
+  // Handle mobile menu toggle
+  const menuToggle = document.querySelector('.mobile-menu-toggle');
+  const mobileMenu = document.querySelector('.mobile-menu');
+  
+  if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener('click', () => {
       mobileMenu.classList.toggle('hidden');
     });
   }
+  
+  // Add smooth scrolling for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(this: HTMLAnchorElement, e: Event) {
+      e.preventDefault();
+      
+      const target = document.querySelector(this.getAttribute('href') as string);
+      if (target) {
+        target.scrollIntoView({
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
 
   // Initialize current year in footer
   const yearElement = document.querySelector('.copyright-year');
   if (yearElement) {
     yearElement.textContent = new Date().getFullYear().toString();
   }
+});
 
-  // Add smooth scrolling for anchor links
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(this: HTMLAnchorElement, e: Event) {
-      const href = this.getAttribute('href');
-      if (href) {
-        const target = document.querySelector(href);
-        if (target) {
-          e.preventDefault();
-          target.scrollIntoView({
-            behavior: 'smooth'
-          });
-        }
-      }
+// Reinitialize AOS when window is resized
+window.addEventListener('resize', () => {
+  if (typeof AOS !== 'undefined') {
+    AOS.refresh();
+  }
+});
+
+// Custom animations for specific elements
+const setupCustomAnimations = () => {
+  // Staggered animations for service items
+  const serviceItems = document.querySelectorAll('.service-item');
+  serviceItems.forEach((item, index) => {
+    item.setAttribute('data-aos-delay', (index * 100).toString());
+  });
+  
+  // Staggered animations for portfolio items
+  const portfolioItems = document.querySelectorAll('.portfolio-item');
+  portfolioItems.forEach((item, index) => {
+    item.setAttribute('data-aos-delay', (index * 150).toString());
+  });
+};
+
+// Call setup function when DOM is loaded
+document.addEventListener('DOMContentLoaded', setupCustomAnimations);
+
+// Handle parallax effects
+const handleParallax = () => {
+  const parallaxElements = document.querySelectorAll('.parallax-element');
+  
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.pageYOffset;
+    
+    parallaxElements.forEach(element => {
+      const speed = parseFloat(element.getAttribute('data-parallax-speed') || '0.5');
+      const offset = scrollTop * speed;
+      (element as HTMLElement).style.transform = `translateY(${offset}px)`;
     });
   });
-});
+};
+
+document.addEventListener('DOMContentLoaded', handleParallax);
 
 // Add sticky header functionality
 window.addEventListener('scroll', () => {

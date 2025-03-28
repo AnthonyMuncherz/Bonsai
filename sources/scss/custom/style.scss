@@ -1,0 +1,287 @@
+@charset "UTF-8";
+
+/**
+ * [Table of contents]
+ *   1 Brand
+ *   2 Countdown
+ */
+// Import Bootstrap
+@import "../bootstrap/_functions";
+@import "../bootstrap/_variables";
+@import "../bootstrap/_mixins";
+
+// Import variables
+@import "_variables_custom";
+// Import mixins
+@import "mixins";
+// Import reset styles
+@import "reset";
+
+
+//
+// Main Styles
+// --------------------------------------------------
+
+// Body
+body {
+	-webkit-text-size-adjust: none;
+	-webkit-font-smoothing: subpixel-antialiased;
+	font-size: 16px;
+	font-family: $font-family-base;
+	font-weight: $font-weight-base;
+	line-height: $line-height-base;
+	color: $body-color;
+
+	@include media-breakpoint-up(xl) {
+		font-size: $font-size-body;
+	}
+}
+
+// Links
+a {
+	display: inline-block;
+	text-decoration: none;
+	transition: .33s all ease;
+
+	&,
+	&:active,
+	&:focus {
+		color: $link-color;
+	}
+
+	&:hover,
+	&:focus {
+		color: $link-hover-color;
+		text-decoration: $link-hover-decoration;
+	}
+
+	&[href*='tel'],
+	&[href*='mailto'] {
+		white-space: nowrap;
+	}
+}
+
+// Images
+img {
+	display: inline-block;
+	max-width: 100%;
+	height: auto;
+}
+
+// Horizontal rules
+hr {
+	margin-top: 0;
+	margin-bottom: 0;
+	border-top: 1px solid $gray-light;
+}
+
+/*
+*
+* Typography
+* ==================================================
+*/
+
+#{headings()} {
+	margin-top: 0;
+	margin-bottom: 0;
+	font-family: $headings-font-family;
+	font-weight: $headings-font-weight;
+	color: $headings-color;
+
+	a {
+		@include link(inherit, $link-hover-color);
+	}
+}
+
+h1,
+.heading-1 {
+	font-size: 42px;
+	line-height: $h1-line-height;
+
+	@include media-breakpoint-up(lg) {
+		font-size: 48px;
+	}
+
+	@include media-breakpoint-up(xl) {
+		font-size: $h1-font-size;
+	}
+}
+
+h2,
+.heading-2 {
+	font-size: 38px;
+	line-height: $h2-line-height;
+
+	@include media-breakpoint-up(xl) {
+		font-size: $h2-font-size;
+	}
+}
+
+h3,
+.heading-3 {
+	font-size: 26px;
+	line-height: $h3-line-height;
+
+	@include media-breakpoint-up(xl) {
+		font-size: $h3-font-size;
+	}
+}
+
+h4,
+.heading-4 {
+	font-size: $h4-font-size;
+	line-height: $h4-line-height;
+}
+
+h5,
+.heading-5 {
+	font-size: $h5-font-size;
+	line-height: $h5-line-height;
+}
+
+h6,
+.heading-6 {
+	font-family: $font-family-base;
+	letter-spacing: .2em;
+	text-transform: uppercase;
+	font-size: $h6-font-size;
+	line-height: $h6-line-height;
+}
+
+// Big text
+.big {
+	font-size: $font-size-lg;
+}
+
+// Small text
+@mixin small {
+	font-size: 14px;
+	line-height: (24 / 14);
+}
+
+small,
+.small {
+	display: block;
+	@include small;
+}
+
+// Code
+code,
+.code {
+	padding: 1px 5px;
+	border-radius: 0;
+	font-family: $font-family-base;
+	color: $white;
+	background: $black;
+}
+
+/*
+*
+* Colors
+* ==================================================
+*/
+.page {
+	.text-primary {
+		color: $primary !important;
+	}
+
+	.text-dark {
+		color: $gray-dark;
+	}
+}
+
+/*
+*
+* Main layout
+* ==================================================
+*/
+
+// Page
+//
+.page {
+	position: relative;
+	overflow: hidden;
+	min-height: 100vh !important;
+}
+
+// Page header
+.page-header {
+	position: relative;
+	z-index: 1000;
+	padding: 0;
+	margin: 0;
+	border-bottom: none;
+}
+
+// Page footer
+.page-footer {
+}
+
+//call to action
+//
+.cat-img-group {
+	position: relative;
+	overflow: hidden;
+	padding-bottom: 100%;
+
+	> div {
+		position: absolute;
+		bottom: 0;
+		max-width: 80%;
+
+		&:first-of-type {
+			z-index: 1;
+			right: 0;
+
+		}
+
+		&:last-of-type {
+			left: 0;
+		}
+	}
+
+	img {
+		width: auto;
+	}
+}
+
+.cat-wrap {
+	padding: 60px 0 80px;
+	@include media-breakpoint-up(lg) {
+		padding: 120px 0 140px;
+	}
+}
+
+.cat-mod-1 {
+	max-width: 715px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 0 15px;
+
+	> * {
+		color: $white;
+	}
+}
+
+//toggle
+[data-custom-toggle] {
+	cursor: pointer;
+}
+
+// Components & modules & plugins & helpers & fonts
+//
+
+.hero-image {
+	@include media-breakpoint-up(md) {
+		position: relative;
+
+		img {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+		}
+	}
+}
+
+@import "includes";

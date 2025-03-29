@@ -8,61 +8,84 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Get user information
+// Get user ID
 $user_id = $_SESSION['user_id'];
-$db = get_db_connection();
 
-// Process any pending activity logs first
-process_activity_logs();
+// Process any pending activity logs
+if (function_exists('process_activity_logs')) {
+    process_activity_logs();
+}
 
-// Pagination setup - ensure we have valid integers
+// Setup pagination with strict type checking
 $items_per_page = 10;
-$current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-if ($current_page < 1) $current_page = 1;
+$current_page = 1; // Default to page 1
+
+// Validate and convert page parameter to integer
+if (isset($_GET['page']) && ctype_digit($_GET['page']) && $_GET['page'] > 0) {
+    $current_page = (int)$_GET['page'];
+}
+
+// Calculate offset with explicit integer typing
+$current_page = (int)$current_page;
+$items_per_page = (int)$items_per_page;
 $offset = ($current_page - 1) * $items_per_page;
+$offset = (int)$offset;
+
+// Fetch activities with error handling
+$activities = [];
+$total_pages = 1;
 
 try {
-    // Get total count of activities
-    $count_query = $db->prepare("SELECT COUNT(*) as total FROM user_activities WHERE user_id = :user_id");
-    $count_query->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
-    $count_result = $count_query->execute();
-    $count_data = $count_result->fetchArray(SQLITE3_ASSOC);
-    $total_activities = (int)$count_data['total']; // Ensure this is an integer
-    $total_pages = (int)ceil($total_activities / $items_per_page); // Ensure this is an integer
+    $db = get_db_connection();
     
-    // Check if current page is greater than total pages
-    if ($current_page > $total_pages && $total_pages > 0) {
-        $current_page = $total_pages;
-        $offset = ($current_page - 1) * $items_per_page;
+    // Get total count with explicit integer casting
+    $count_stmt = $db->prepare("SELECT COUNT(*) as total FROM user_activities WHERE user_id = :user_id");
+    $count_stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+    $count_result = $count_stmt->execute();
+    $count_row = $count_result->fetchArray(SQLITE3_ASSOC);
+    $total_count = isset($count_row['total']) ? (int)$count_row['total'] : 0;
+    
+    // Calculate total pages using integer division and ceiling
+    $total_pages = $total_count > 0 ? (int)ceil($total_count / $items_per_page) : 1;
+    
+    // Adjust current page if needed
+    if ((int)$current_page > (int)$total_pages) {
+        $current_page = (int)$total_pages;
+        $offset = ((int)$current_page - 1) * (int)$items_per_page;
+        $offset = (int)$offset;
     }
     
-    // Get activities for current page
-    $query = $db->prepare("
+    // Fetch activities for current page
+    $stmt = $db->prepare("
         SELECT * FROM user_activities 
         WHERE user_id = :user_id 
         ORDER BY created_at DESC 
         LIMIT :limit OFFSET :offset
     ");
-    $query->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
-    $query->bindValue(':limit', $items_per_page, SQLITE3_INTEGER);
-    $query->bindValue(':offset', $offset, SQLITE3_INTEGER);
-    $result = $query->execute();
     
-    $activities = [];
+    $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+    $stmt->bindValue(':limit', $items_per_page, SQLITE3_INTEGER);
+    $stmt->bindValue(':offset', $offset, SQLITE3_INTEGER);
+    
+    $result = $stmt->execute();
+    
+    // Collect activities
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
         $activities[] = $row;
     }
+    
+    // Close database connection
+    $db->close();
+    
 } catch (Exception $e) {
-    error_log("Error loading activity history: " . $e->getMessage());
+    error_log("Activity history error: " . $e->getMessage());
+    // Keep defaults if there's an error
     $activities = [];
     $total_pages = 1;
     $current_page = 1;
 }
 
-// Close database connection
-$db->close();
-
-// Include header after processing
+// Include header
 require_once 'includes/header.php';
 ?>
 
@@ -83,7 +106,7 @@ require_once 'includes/header.php';
                                 <a href="dashboard.php" class="block px-4 py-2 hover:bg-gray-100 rounded">Account Dashboard</a>
                             </li>
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 rounded">My Orders</a>
+                                <a href="my_orders.php" class="block px-4 py-2 hover:bg-gray-100 rounded">My Orders</a>
                             </li>
                             <li>
                                 <a href="wishlist.php" class="block px-4 py-2 hover:bg-gray-100 rounded">Wish List</a>
@@ -157,52 +180,37 @@ require_once 'includes/header.php';
                                     <?php endforeach; ?>
                                 </div>
                                 
-                                <!-- Pagination -->
-                                <?php if ($total_pages > 1): ?>
-                                    <div class="flex justify-center space-x-1 mt-6">
-                                        <?php if ($current_page > 1): ?>
-                                            <a href="?page=<?php echo $current_page - 1; ?>" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">
-                                                Previous
-                                            </a>
-                                        <?php else: ?>
-                                            <span class="px-4 py-2 bg-gray-100 text-gray-400 rounded-md cursor-not-allowed">
-                                                Previous
-                                            </span>
-                                        <?php endif; ?>
-                                        
-                                        <?php 
-                                        // Make sure all values are integers to prevent type errors
-                                        $current_page = (int)$current_page;
-                                        $total_pages = (int)$total_pages;
-                                        
-                                        $start_page = max(1, $current_page - 2);
-                                        $end_page = min($total_pages, $start_page + 4);
-                                        if ($end_page - $start_page < 4 && $start_page > 1) {
-                                            $start_page = max(1, $end_page - 4);
-                                        }
-                                        
-                                        for ($i = $start_page; $i <= $end_page; $i++): 
-                                        ?>
-                                            <?php if ($i == $current_page): ?>
-                                                <span class="px-4 py-2 bg-primary text-white rounded-md">
-                                                    <?php echo $i; ?>
-                                                </span>
-                                            <?php else: ?>
-                                                <a href="?page=<?php echo $i; ?>" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">
-                                                    <?php echo $i; ?>
+                                <!-- Extremely simplified pagination to avoid any calculation errors -->
+                                <?php if ((int)$total_pages > 1): ?>
+                                    <div class="flex justify-center mt-6">
+                                        <nav class="inline-flex shadow-sm">
+                                            <!-- Previous button -->
+                                            <?php if ((int)$current_page > 1): ?>
+                                                <a href="activity_history.php?page=<?php echo (int)$current_page - 1; ?>" class="px-3 py-2 bg-white border border-gray-300 text-sm font-medium rounded-l-md text-gray-700 hover:bg-gray-50">
+                                                    Previous
                                                 </a>
+                                            <?php else: ?>
+                                                <span class="px-3 py-2 bg-gray-100 border border-gray-300 text-sm font-medium rounded-l-md text-gray-400 cursor-not-allowed">
+                                                    Previous
+                                                </span>
                                             <?php endif; ?>
-                                        <?php endfor; ?>
-                                        
-                                        <?php if ($current_page < $total_pages): ?>
-                                            <a href="?page=<?php echo $current_page + 1; ?>" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300">
-                                                Next
-                                            </a>
-                                        <?php else: ?>
-                                            <span class="px-4 py-2 bg-gray-100 text-gray-400 rounded-md cursor-not-allowed">
-                                                Next
+                                            
+                                            <!-- Current page indicator -->
+                                            <span class="px-3 py-2 bg-blue-50 border-t border-b border-gray-300 text-sm font-medium text-blue-700">
+                                                Page <?php echo (int)$current_page; ?> of <?php echo (int)$total_pages; ?>
                                             </span>
-                                        <?php endif; ?>
+                                            
+                                            <!-- Next button -->
+                                            <?php if ((int)$current_page < (int)$total_pages): ?>
+                                                <a href="activity_history.php?page=<?php echo (int)$current_page + 1; ?>" class="px-3 py-2 bg-white border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 hover:bg-gray-50">
+                                                    Next
+                                                </a>
+                                            <?php else: ?>
+                                                <span class="px-3 py-2 bg-gray-100 border border-gray-300 text-sm font-medium rounded-r-md text-gray-400 cursor-not-allowed">
+                                                    Next
+                                                </span>
+                                            <?php endif; ?>
+                                        </nav>
                                     </div>
                                 <?php endif; ?>
                             <?php endif; ?>

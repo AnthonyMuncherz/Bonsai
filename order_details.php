@@ -146,6 +146,11 @@ require_once 'includes/header.php';
                                 ?>">
                                 <?php echo ucfirst(htmlspecialchars($order['status'])); ?>
                             </span>
+                            <?php if ($order['status'] === 'pending'): ?>
+                                <a href="payment.php?order_id=<?php echo $order_id; ?>" class="ml-3 inline-flex items-center px-4 py-1 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                                    Complete Payment
+                                </a>
+                            <?php endif; ?>
                         </div>
                     </div>
                     

@@ -180,6 +180,12 @@ require_once 'includes/header.php';
                                                     <a href="order_details.php?id=<?php echo $order['id']; ?>" class="text-primary hover:text-primary-dark">
                                                         View Details
                                                     </a>
+                                                    <?php if ($order['status'] === 'pending'): ?>
+                                                        <span class="mx-2">|</span>
+                                                        <a href="payment.php?order_id=<?php echo $order['id']; ?>" class="text-green-600 hover:text-green-800">
+                                                            Complete Payment
+                                                        </a>
+                                                    <?php endif; ?>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>

@@ -28,6 +28,74 @@ $current_page = basename($_SERVER['PHP_SELF']);
         .btn-primary:hover {
             background-color: #d36e43;
         }
+        
+        /* Dropdown styling */
+        .user-dropdown {
+            position: relative;
+            display: inline-block;
+            z-index: 9999;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background-color: white;
+            min-width: 12rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+            z-index: 9999;
+            overflow: hidden;
+        }
+        
+        .services-dropdown .dropdown-menu {
+            left: 0;
+            right: auto;
+        }
+        
+        .user-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-menu a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: #556052;
+            transition: background-color 0.2s;
+            text-decoration: none;
+        }
+        
+        .dropdown-menu a:hover {
+            background-color: #f3f4f6;
+        }
+        
+        /* Create a transparent bridge to prevent dropdown from closing */
+        .dropdown-bridge {
+            position: absolute;
+            height: 15px;
+            left: 0;
+            right: 0;
+            top: -15px;
+        }
+        
+        /* Ensure header has proper position for z-index context */
+        header {
+            position: relative;
+            z-index: 1000;
+        }
+        
+        /* For mobile menu */
+        #mobile-menu {
+            position: relative;
+            z-index: 999;
+        }
     </style>
 </head>
 <body class="bg-white text-gray-800 flex flex-col min-h-screen">
@@ -62,16 +130,17 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         <a href="about.php" class="<?php echo $current_page == 'about.php' ? 'text-primary font-bold' : 'hover:text-primary'; ?>">
                             About
                         </a>
-                        <div class="relative group">
+                        <div class="user-dropdown services-dropdown">
                             <a href="services.php" class="<?php echo $current_page == 'services.php' || $current_page == 'single-service.php' ? 'text-primary font-bold' : 'hover:text-primary'; ?> flex items-center">
                                 Services
                                 <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                 </svg>
                             </a>
-                            <div class="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-lg hidden group-hover:block z-10">
-                                <a href="services.php" class="block px-4 py-2 text-olive-dark hover:bg-gray-100">Services</a>
-                                <a href="single-service.php" class="block px-4 py-2 text-olive-dark hover:bg-gray-100">Single Service</a>
+                            <div class="dropdown-menu">
+                                <div class="dropdown-bridge"></div>
+                                <a href="services.php" class="block">Services</a>
+                                <a href="single-service.php" class="block">Single Service</a>
                             </div>
                         </div>
                         <a href="portfolio.php" class="<?php echo $current_page == 'portfolio.php' ? 'text-primary font-bold' : 'hover:text-primary'; ?>">
@@ -81,34 +150,29 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         <a href="catalogue.php" class="<?php echo $current_page == 'catalogue.php' ? 'text-primary font-bold' : 'hover:text-primary'; ?>">
                             Catalogue
                         </a>
-                        <a href="cart.php" class="<?php echo $current_page == 'cart.php' ? 'text-primary font-bold' : 'hover:text-primary'; ?>">
-                            Cart
-                        </a>
-                        <a href="wishlist.php" class="<?php echo $current_page == 'wishlist.php' ? 'text-primary font-bold' : 'hover:text-primary'; ?>">
-                            Wishlist
-                        </a>
                         <?php endif; ?>
                         <a href="contacts.php" class="<?php echo $current_page == 'contacts.php' ? 'text-primary font-bold' : 'hover:text-primary'; ?>">
                             Contacts
                         </a>
                         
                         <?php if(isset($_SESSION['user_id'])): ?>
-                            <div class="relative group">
+                            <div class="user-dropdown">
                                 <a href="dashboard.php" class="flex items-center hover:text-primary">
                                     <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
                                     <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                     </svg>
                                 </a>
-                                <div class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg hidden group-hover:block z-10">
-                                    <a href="dashboard.php" class="block px-4 py-2 text-olive-dark hover:bg-gray-100">Dashboard</a>
-                                    <a href="catalogue.php" class="block px-4 py-2 text-olive-dark hover:bg-gray-100">Catalogue</a>
-                                    <a href="cart.php" class="block px-4 py-2 text-olive-dark hover:bg-gray-100">Cart</a>
-                                    <a href="wishlist.php" class="block px-4 py-2 text-olive-dark hover:bg-gray-100">Wishlist</a>
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-bridge"></div>
+                                    <a href="dashboard.php" class="block">Dashboard</a>
+                                    <a href="catalogue.php" class="block">Catalogue</a>
+                                    <a href="cart.php" class="block">Cart</a>
+                                    <a href="wishlist.php" class="block">Wishlist</a>
                                     <?php if($_SESSION['is_admin']): ?>
-                                        <a href="admin.php" class="block px-4 py-2 text-olive-dark hover:bg-gray-100">Admin Panel</a>
+                                        <a href="admin.php" class="block">Admin Panel</a>
                                     <?php endif; ?>
-                                    <a href="logout.php" class="block px-4 py-2 text-olive-dark hover:bg-gray-100">Logout</a>
+                                    <a href="logout.php" class="block">Logout</a>
                                 </div>
                             </div>
                         <?php else: ?>
@@ -147,12 +211,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         <?php if(isset($_SESSION['user_id'])): ?>
                         <a href="catalogue.php" class="<?php echo $current_page == 'catalogue.php' ? 'text-primary font-bold' : ''; ?> py-2">
                             Catalogue
-                        </a>
-                        <a href="cart.php" class="<?php echo $current_page == 'cart.php' ? 'text-primary font-bold' : ''; ?> py-2">
-                            Cart
-                        </a>
-                        <a href="wishlist.php" class="<?php echo $current_page == 'wishlist.php' ? 'text-primary font-bold' : ''; ?> py-2">
-                            Wishlist
                         </a>
                         <?php endif; ?>
                         <a href="contacts.php" class="<?php echo $current_page == 'contacts.php' ? 'text-primary font-bold' : ''; ?> py-2">

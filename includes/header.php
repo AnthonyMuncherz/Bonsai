@@ -84,6 +84,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         <a href="cart.php" class="<?php echo $current_page == 'cart.php' ? 'text-primary font-bold' : 'hover:text-primary'; ?>">
                             Cart
                         </a>
+                        <a href="wishlist.php" class="<?php echo $current_page == 'wishlist.php' ? 'text-primary font-bold' : 'hover:text-primary'; ?>">
+                            Wishlist
+                        </a>
                         <?php endif; ?>
                         <a href="contacts.php" class="<?php echo $current_page == 'contacts.php' ? 'text-primary font-bold' : 'hover:text-primary'; ?>">
                             Contacts
@@ -101,6 +104,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                     <a href="dashboard.php" class="block px-4 py-2 text-olive-dark hover:bg-gray-100">Dashboard</a>
                                     <a href="catalogue.php" class="block px-4 py-2 text-olive-dark hover:bg-gray-100">Catalogue</a>
                                     <a href="cart.php" class="block px-4 py-2 text-olive-dark hover:bg-gray-100">Cart</a>
+                                    <a href="wishlist.php" class="block px-4 py-2 text-olive-dark hover:bg-gray-100">Wishlist</a>
                                     <?php if($_SESSION['is_admin']): ?>
                                         <a href="admin.php" class="block px-4 py-2 text-olive-dark hover:bg-gray-100">Admin Panel</a>
                                     <?php endif; ?>
@@ -147,6 +151,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         <a href="cart.php" class="<?php echo $current_page == 'cart.php' ? 'text-primary font-bold' : ''; ?> py-2">
                             Cart
                         </a>
+                        <a href="wishlist.php" class="<?php echo $current_page == 'wishlist.php' ? 'text-primary font-bold' : ''; ?> py-2">
+                            Wishlist
+                        </a>
                         <?php endif; ?>
                         <a href="contacts.php" class="<?php echo $current_page == 'contacts.php' ? 'text-primary font-bold' : ''; ?> py-2">
                             Contacts
@@ -166,6 +173,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                     <a href="dashboard.php" class="block py-1">Dashboard</a>
                                     <a href="catalogue.php" class="block py-1">Catalogue</a>
                                     <a href="cart.php" class="block py-1">Cart</a>
+                                    <a href="wishlist.php" class="block py-1">Wishlist</a>
                                     <?php if($_SESSION['is_admin']): ?>
                                         <a href="admin.php" class="block py-1">Admin Panel</a>
                                     <?php endif; ?>

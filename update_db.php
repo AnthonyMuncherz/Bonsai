@@ -67,5 +67,30 @@ if (!$cartTableExists) {
     echo "Cart table already exists.<br>";
 }
 
+// Check if wishlist table exists
+$result = $db->query("SELECT name FROM sqlite_master WHERE type='table' AND name='wishlist'");
+$wishlistTableExists = $result->fetchArray();
+
+if (!$wishlistTableExists) {
+    echo "Creating wishlist table...<br>";
+    
+    // Create wishlist table
+    $db->exec("
+        CREATE TABLE wishlist (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            book_id INTEGER NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            FOREIGN KEY (book_id) REFERENCES books(id),
+            UNIQUE(user_id, book_id)
+        )
+    ");
+    
+    echo "Wishlist table created successfully!<br>";
+} else {
+    echo "Wishlist table already exists.<br>";
+}
+
 echo "<p>Click <a href='catalogue.php'>here</a> to go to the catalogue.</p>";
 ?> 

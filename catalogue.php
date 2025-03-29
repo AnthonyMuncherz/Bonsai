@@ -16,6 +16,20 @@ $db = get_db_connection();
 $query = "SELECT * FROM books ORDER BY title ASC";
 $result = $db->query($query);
 
+// Get user's wishlist if logged in
+$user_wishlist = [];
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+    $wishlist_query = "SELECT book_id FROM wishlist WHERE user_id = :user_id";
+    $stmt = $db->prepare($wishlist_query);
+    $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+    $wishlist_result = $stmt->execute();
+    
+    while ($item = $wishlist_result->fetchArray(SQLITE3_ASSOC)) {
+        $user_wishlist[] = $item['book_id'];
+    }
+}
+
 // Define categories for filter
 $categories = [];
 $category_query = "SELECT DISTINCT category FROM books ORDER BY category ASC";
@@ -143,7 +157,7 @@ $result = $stmt->execute();
                     </div>
                     
                     <!-- Book Info -->
-                    <div class="p-6">
+                    <div class="p-6 flex flex-col h-64">
                         <div class="flex justify-between items-start">
                             <div>
                                 <h3 class="text-xl font-bold mb-2"><?php echo htmlspecialchars($book['title']); ?></h3>
@@ -154,9 +168,9 @@ $result = $stmt->execute();
                             </span>
                         </div>
                         
-                        <p class="text-gray-700 mb-4 line-clamp-3"><?php echo htmlspecialchars($book['description']); ?></p>
+                        <p class="text-gray-700 mb-4 line-clamp-3 h-18 overflow-hidden"><?php echo htmlspecialchars($book['description']); ?></p>
                         
-                        <div class="flex justify-between items-center">
+                        <div class="flex justify-between items-center mt-auto">
                             <span class="text-sm text-gray-500">
                                 <?php if ($book['stock'] > 0): ?>
                                     <span class="text-green-600">In Stock (<?php echo $book['stock']; ?>)</span>
@@ -165,12 +179,25 @@ $result = $stmt->execute();
                                 <?php endif; ?>
                             </span>
                             
-                            <form action="add_to_cart.php" method="POST">
-                                <input type="hidden" name="book_id" value="<?php echo $book['id']; ?>">
-                                <button type="submit" class="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark transition" <?php echo $book['stock'] <= 0 ? 'disabled' : ''; ?>>
-                                    Add to Cart
-                                </button>
-                            </form>
+                            <div class="flex space-x-2">
+                                <!-- Wishlist Button -->
+                                <form action="add_to_wishlist.php" method="POST">
+                                    <input type="hidden" name="book_id" value="<?php echo $book['id']; ?>">
+                                    <button type="submit" class="p-2 rounded-md border <?php echo in_array($book['id'], $user_wishlist) ? 'text-red-500 border-red-500' : 'text-gray-400 border-gray-300 hover:text-red-500 hover:border-red-500'; ?> transition">
+                                        <svg class="w-5 h-5" fill="<?php echo in_array($book['id'], $user_wishlist) ? 'currentColor' : 'none'; ?>" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                        </svg>
+                                    </button>
+                                </form>
+                                
+                                <!-- Add to Cart Button -->
+                                <form action="add_to_cart.php" method="POST">
+                                    <input type="hidden" name="book_id" value="<?php echo $book['id']; ?>">
+                                    <button type="submit" class="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark transition w-32 text-center" <?php echo $book['stock'] <= 0 ? 'disabled' : ''; ?>>
+                                        Add to Cart
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>

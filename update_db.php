@@ -4,6 +4,8 @@ require_once 'includes/db.php';
 // Get database connection
 $db = get_db_connection();
 
+echo "<h1>Updating Database</h1>";
+
 // Check if books table already exists
 $result = $db->query("SELECT name FROM sqlite_master WHERE type='table' AND name='books'");
 $tableExists = $result->fetchArray();
@@ -40,6 +42,89 @@ if (!$tableExists) {
     echo "Books table created and populated successfully!<br>";
 } else {
     echo "Books table already exists.<br>";
+}
+
+// Check if publisher, ISBN, pages, published_year columns exist in books table
+$result = $db->query("PRAGMA table_info(books)");
+$columns = [];
+while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+    $columns[] = $row['name'];
+}
+
+// Add new columns if they don't exist
+if (!in_array('publisher', $columns)) {
+    echo "<p>Adding publisher column to books table...</p>";
+    $db->exec("ALTER TABLE books ADD COLUMN publisher TEXT");
+}
+
+if (!in_array('isbn', $columns)) {
+    echo "<p>Adding ISBN column to books table...</p>";
+    $db->exec("ALTER TABLE books ADD COLUMN isbn TEXT");
+}
+
+if (!in_array('pages', $columns)) {
+    echo "<p>Adding pages column to books table...</p>";
+    $db->exec("ALTER TABLE books ADD COLUMN pages INTEGER");
+}
+
+if (!in_array('published_year', $columns)) {
+    echo "<p>Adding published_year column to books table...</p>";
+    $db->exec("ALTER TABLE books ADD COLUMN published_year INTEGER");
+}
+
+// Update sample books with the new information if it's empty
+$books = [
+    [
+        'id' => 1,
+        'publisher' => 'DK Publishing',
+        'isbn' => '978-0-7566-5636-7',
+        'pages' => 192,
+        'published_year' => 2015
+    ],
+    [
+        'id' => 2,
+        'publisher' => 'Sterling Publishing',
+        'isbn' => '978-1-58017-595-2',
+        'pages' => 224,
+        'published_year' => 2019
+    ],
+    [
+        'id' => 3,
+        'publisher' => 'Mitchell Beazley',
+        'isbn' => '978-1-84533-592-5',
+        'pages' => 256,
+        'published_year' => 2018
+    ],
+    [
+        'id' => 4,
+        'publisher' => 'Random House',
+        'isbn' => '978-0-8041-3333-3',
+        'pages' => 176,
+        'published_year' => 2016
+    ],
+    [
+        'id' => 5,
+        'publisher' => 'Timber Press',
+        'isbn' => '978-0-88192-901-3',
+        'pages' => 332,
+        'published_year' => 2010
+    ]
+];
+
+// Update book data
+echo "<p>Updating book information...</p>";
+foreach ($books as $book) {
+    $stmt = $db->prepare("
+        UPDATE books 
+        SET publisher = :publisher, isbn = :isbn, pages = :pages, published_year = :published_year 
+        WHERE id = :id
+    ");
+    $stmt->bindValue(':publisher', $book['publisher'], SQLITE3_TEXT);
+    $stmt->bindValue(':isbn', $book['isbn'], SQLITE3_TEXT);
+    $stmt->bindValue(':pages', $book['pages'], SQLITE3_INTEGER);
+    $stmt->bindValue(':published_year', $book['published_year'], SQLITE3_INTEGER);
+    $stmt->bindValue(':id', $book['id'], SQLITE3_INTEGER);
+    $stmt->execute();
 }
 
 // Check if cart table exists
@@ -148,4 +233,7 @@ $db->exec('PRAGMA synchronous = NORMAL;');
 $db->exec('PRAGMA busy_timeout = 5000;');
 
 echo "<p>Click <a href='catalogue.php'>here</a> to go to the catalogue.</p>";
+
+echo "<p>Database update completed successfully!</p>";
+echo "<p><a href='index.php'>Return to Home</a></p>";
 ?> 

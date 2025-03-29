@@ -142,7 +142,7 @@ $result = $stmt->execute();
                 <?php $has_books = true; ?>
                 <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform transform hover:scale-105">
                     <!-- Book Image -->
-                    <div class="h-64 bg-gray-100 overflow-hidden">
+                    <a href="book.php?id=<?php echo $book['id']; ?>" class="block h-64 bg-gray-100 overflow-hidden">
                         <?php if (!empty($book['image']) && file_exists('Images/books/' . $book['image'])): ?>
                             <img src="Images/books/<?php echo htmlspecialchars($book['image']); ?>" 
                                  alt="<?php echo htmlspecialchars($book['title']); ?>"
@@ -154,13 +154,17 @@ $result = $stmt->execute();
                                 </svg>
                             </div>
                         <?php endif; ?>
-                    </div>
+                    </a>
                     
                     <!-- Book Info -->
                     <div class="p-6 flex flex-col h-64">
                         <div class="flex justify-between items-start">
                             <div>
-                                <h3 class="text-xl font-bold mb-2"><?php echo htmlspecialchars($book['title']); ?></h3>
+                                <h3 class="text-xl font-bold mb-2">
+                                    <a href="book.php?id=<?php echo $book['id']; ?>" class="hover:text-primary">
+                                        <?php echo htmlspecialchars($book['title']); ?>
+                                    </a>
+                                </h3>
                                 <p class="text-gray-600 mb-4">by <?php echo htmlspecialchars($book['author']); ?></p>
                             </div>
                             <span class="bg-primary text-white px-3 py-1 rounded-full text-sm">

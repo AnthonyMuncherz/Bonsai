@@ -14,10 +14,34 @@ if (isset($_GET['remove']) && is_numeric($_GET['remove'])) {
     $user_id = $_SESSION['user_id'];
     
     $db = get_db_connection();
+    
+    // Get book information before deletion for activity log
+    $stmt = $db->prepare("
+        SELECT c.book_id, b.title 
+        FROM cart c 
+        JOIN books b ON c.book_id = b.id 
+        WHERE c.id = :id AND c.user_id = :user_id
+    ");
+    $stmt->bindValue(':id', $item_id, SQLITE3_INTEGER);
+    $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+    $result = $stmt->execute();
+    $book = $result->fetchArray(SQLITE3_ASSOC);
+    
+    // Delete the item from cart
     $stmt = $db->prepare("DELETE FROM cart WHERE id = :id AND user_id = :user_id");
     $stmt->bindValue(':id', $item_id, SQLITE3_INTEGER);
     $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
     $stmt->execute();
+    
+    // Record activity if book was found
+    if ($book) {
+        record_user_activity(
+            $user_id,
+            'cart_remove',
+            "Removed \"{$book['title']}\" from cart",
+            $book['book_id']
+        );
+    }
     
     header('Location: cart.php?success=removed');
     exit;

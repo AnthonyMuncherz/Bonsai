@@ -91,7 +91,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         
                         <?php if(isset($_SESSION['user_id'])): ?>
                             <div class="relative group">
-                                <a href="#" class="flex items-center hover:text-primary">
+                                <a href="dashboard.php" class="flex items-center hover:text-primary">
                                     <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
                                     <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -155,7 +155,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         <?php if(isset($_SESSION['user_id'])): ?>
                             <div class="py-2">
                                 <div class="flex items-center justify-between cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
-                                    <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                                    <a href="dashboard.php">
+                                        <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                                    </a>
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                     </svg>

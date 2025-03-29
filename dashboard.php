@@ -46,19 +46,19 @@ if ($user && is_array($user)) {
                     <div class="md:w-1/4 mb-8 md:mb-0">
                         <ul class="space-y-2">
                             <li>
-                                <a href="#" class="block px-4 py-2 bg-gray-100 rounded font-medium">Account Dashboard</a>
+                                <a href="dashboard.php" class="block px-4 py-2 bg-gray-100 rounded font-medium">Account Dashboard</a>
                             </li>
                             <li>
                                 <a href="#" class="block px-4 py-2 hover:bg-gray-100 rounded">My Orders</a>
                             </li>
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 rounded">Wish List</a>
+                                <a href="wishlist.php" class="block px-4 py-2 hover:bg-gray-100 rounded">Wish List</a>
                             </li>
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 rounded">Edit Account</a>
+                                <a href="edit_account.php" class="block px-4 py-2 hover:bg-gray-100 rounded">Edit Account</a>
                             </li>
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 rounded">Change Password</a>
+                                <a href="change_password.php" class="block px-4 py-2 hover:bg-gray-100 rounded">Change Password</a>
                             </li>
                             <li>
                                 <a href="logout.php" class="block px-4 py-2 hover:bg-gray-100 rounded text-red-600">Logout</a>

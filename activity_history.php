@@ -12,36 +12,55 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $db = get_db_connection();
 
-// Pagination setup
+// Process any pending activity logs first
+process_activity_logs();
+
+// Pagination setup - ensure we have valid integers
 $items_per_page = 10;
-$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 if ($current_page < 1) $current_page = 1;
 $offset = ($current_page - 1) * $items_per_page;
 
-// Get total count of activities
-$count_query = $db->prepare("SELECT COUNT(*) as total FROM user_activities WHERE user_id = :user_id");
-$count_query->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
-$count_result = $count_query->execute();
-$total_activities = $count_result->fetchArray(SQLITE3_ASSOC)['total'];
-$total_pages = ceil($total_activities / $items_per_page);
-
-// Get activities for current page
-$db = get_db_connection();
-$query = $db->prepare("
-    SELECT * FROM user_activities 
-    WHERE user_id = :user_id 
-    ORDER BY created_at DESC 
-    LIMIT :limit OFFSET :offset
-");
-$query->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
-$query->bindValue(':limit', $items_per_page, SQLITE3_INTEGER);
-$query->bindValue(':offset', $offset, SQLITE3_INTEGER);
-$result = $query->execute();
-
-$activities = [];
-while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
-    $activities[] = $row;
+try {
+    // Get total count of activities
+    $count_query = $db->prepare("SELECT COUNT(*) as total FROM user_activities WHERE user_id = :user_id");
+    $count_query->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+    $count_result = $count_query->execute();
+    $count_data = $count_result->fetchArray(SQLITE3_ASSOC);
+    $total_activities = (int)$count_data['total']; // Ensure this is an integer
+    $total_pages = (int)ceil($total_activities / $items_per_page); // Ensure this is an integer
+    
+    // Check if current page is greater than total pages
+    if ($current_page > $total_pages && $total_pages > 0) {
+        $current_page = $total_pages;
+        $offset = ($current_page - 1) * $items_per_page;
+    }
+    
+    // Get activities for current page
+    $query = $db->prepare("
+        SELECT * FROM user_activities 
+        WHERE user_id = :user_id 
+        ORDER BY created_at DESC 
+        LIMIT :limit OFFSET :offset
+    ");
+    $query->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+    $query->bindValue(':limit', $items_per_page, SQLITE3_INTEGER);
+    $query->bindValue(':offset', $offset, SQLITE3_INTEGER);
+    $result = $query->execute();
+    
+    $activities = [];
+    while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+        $activities[] = $row;
+    }
+} catch (Exception $e) {
+    error_log("Error loading activity history: " . $e->getMessage());
+    $activities = [];
+    $total_pages = 1;
+    $current_page = 1;
 }
+
+// Close database connection
+$db->close();
 
 // Include header after processing
 require_once 'includes/header.php';
@@ -152,6 +171,10 @@ require_once 'includes/header.php';
                                         <?php endif; ?>
                                         
                                         <?php 
+                                        // Make sure all values are integers to prevent type errors
+                                        $current_page = (int)$current_page;
+                                        $total_pages = (int)$total_pages;
+                                        
                                         $start_page = max(1, $current_page - 2);
                                         $end_page = min($total_pages, $start_page + 4);
                                         if ($end_page - $start_page < 4 && $start_page > 1) {

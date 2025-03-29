@@ -177,14 +177,10 @@ if (!$wishlistTableExists) {
     echo "Wishlist table already exists.<br>";
 }
 
-// Check if user_activities table exists
+// Check if user_activities table exists, create if not
 $result = $db->query("SELECT name FROM sqlite_master WHERE type='table' AND name='user_activities'");
-$activitiesTableExists = $result->fetchArray();
-
-if (!$activitiesTableExists) {
-    echo "Creating user_activities table...<br>";
-    
-    // Create user_activities table
+if (!$result->fetchArray()) {
+    echo "<p>Creating user_activities table...</p>";
     $db->exec("
         CREATE TABLE user_activities (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -196,10 +192,69 @@ if (!$activitiesTableExists) {
             FOREIGN KEY (user_id) REFERENCES users(id)
         )
     ");
-    
-    echo "User activities table created successfully!<br>";
-} else {
-    echo "User activities table already exists.<br>";
+}
+
+// Check if orders table exists, create if not
+$result = $db->query("SELECT name FROM sqlite_master WHERE type='table' AND name='orders'");
+if (!$result->fetchArray()) {
+    echo "<p>Creating orders table...</p>";
+    $db->exec("
+        CREATE TABLE orders (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            order_number VARCHAR(20) NOT NULL,
+            total_amount DECIMAL(10,2) NOT NULL,
+            status VARCHAR(50) NOT NULL DEFAULT 'pending',
+            payment_method VARCHAR(50) NOT NULL,
+            shipping_address_id INTEGER,
+            notes TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            FOREIGN KEY (shipping_address_id) REFERENCES shipping_addresses(id)
+        )
+    ");
+}
+
+// Check if order_items table exists, create if not
+$result = $db->query("SELECT name FROM sqlite_master WHERE type='table' AND name='order_items'");
+if (!$result->fetchArray()) {
+    echo "<p>Creating order_items table...</p>";
+    $db->exec("
+        CREATE TABLE order_items (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            order_id INTEGER NOT NULL,
+            book_id INTEGER NOT NULL,
+            quantity INTEGER NOT NULL,
+            price DECIMAL(10,2) NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (order_id) REFERENCES orders(id),
+            FOREIGN KEY (book_id) REFERENCES books(id)
+        )
+    ");
+}
+
+// Check if shipping_addresses table exists, create if not
+$result = $db->query("SELECT name FROM sqlite_master WHERE type='table' AND name='shipping_addresses'");
+if (!$result->fetchArray()) {
+    echo "<p>Creating shipping_addresses table...</p>";
+    $db->exec("
+        CREATE TABLE shipping_addresses (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            full_name VARCHAR(100) NOT NULL,
+            address_line1 TEXT NOT NULL,
+            address_line2 TEXT,
+            city VARCHAR(100) NOT NULL,
+            postal_code VARCHAR(20) NOT NULL,
+            state VARCHAR(100) NOT NULL,
+            country VARCHAR(100) NOT NULL DEFAULT 'Malaysia',
+            phone VARCHAR(20) NOT NULL,
+            is_default BOOLEAN NOT NULL DEFAULT 0,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id)
+        )
+    ");
 }
 
 // After creating the user_activities table, add sample activity for existing users if empty

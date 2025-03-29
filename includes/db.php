@@ -116,7 +116,10 @@ function get_db_connection() {
             // Configure SQLite to minimize locking issues
             $db->exec('PRAGMA journal_mode = WAL;');
             $db->exec('PRAGMA synchronous = NORMAL;');
-            $db->exec('PRAGMA busy_timeout = 5000;');
+            $db->exec('PRAGMA busy_timeout = 15000;'); // Increase timeout to 15 seconds
+            $db->exec('PRAGMA temp_store = MEMORY;'); // Store temp tables in memory
+            $db->exec('PRAGMA cache_size = 10000;'); // Increase cache size
+            $db->exec('PRAGMA locking_mode = NORMAL;'); // Use normal locking mode
             return $db;
         }
     } catch (Exception $e) {

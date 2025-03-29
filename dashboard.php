@@ -19,7 +19,26 @@ $result = $query->execute();
 $user = $result->fetchArray(SQLITE3_ASSOC);
 
 // Get recent activities - limit to 2 for dashboard display
-$recent_activities = get_recent_user_activities($user_id, 2);
+$activities = get_recent_user_activities($user_id, 2);
+$recent_activities = [];
+foreach ($activities as $activity) {
+    $recent_activities[] = $activity;
+}
+
+// Get recent orders
+$stmt = $db->prepare("
+    SELECT * FROM orders
+    WHERE user_id = :user_id
+    ORDER BY created_at DESC
+    LIMIT 3
+");
+$stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+$result = $stmt->execute();
+
+$recent_orders = [];
+while ($order = $result->fetchArray(SQLITE3_ASSOC)) {
+    $recent_orders[] = $order;
+}
 
 // Set default values in case user data is not found
 $username = 'Unknown';
@@ -52,7 +71,7 @@ if ($user && is_array($user)) {
                                 <a href="dashboard.php" class="block px-4 py-2 bg-gray-100 rounded font-medium">Account Dashboard</a>
                             </li>
                             <li>
-                                <a href="#" class="block px-4 py-2 hover:bg-gray-100 rounded">My Orders</a>
+                                <a href="my_orders.php" class="block px-4 py-2 hover:bg-gray-100 rounded">My Orders</a>
                             </li>
                             <li>
                                 <a href="wishlist.php" class="block px-4 py-2 hover:bg-gray-100 rounded">Wish List</a>
@@ -143,6 +162,91 @@ if ($user && is_array($user)) {
                                 <p class="text-sm text-gray-600 mt-1">View your saved items</p>
                             </a>
                         </div>
+                        
+                        <?php if (!empty($recent_orders)): ?>
+                        <h2 class="text-2xl font-bold mt-8 mb-6">Recent Orders</h2>
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Order
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Date
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Status
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Total
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <?php foreach ($recent_orders as $order): ?>
+                                        <tr class="hover:bg-gray-50">
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="text-sm font-medium text-gray-900">
+                                                    <?php echo htmlspecialchars($order['order_number']); ?>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-gray-500">
+                                                    <?php echo date('M j, Y', strtotime($order['created_at'])); ?>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                                    <?php
+                                                    switch ($order['status']) {
+                                                        case 'pending':
+                                                            echo 'bg-yellow-100 text-yellow-800';
+                                                            break;
+                                                        case 'processing':
+                                                            echo 'bg-blue-100 text-blue-800';
+                                                            break;
+                                                        case 'shipped':
+                                                            echo 'bg-indigo-100 text-indigo-800';
+                                                            break;
+                                                        case 'delivered':
+                                                            echo 'bg-green-100 text-green-800';
+                                                            break;
+                                                        case 'cancelled':
+                                                            echo 'bg-red-100 text-red-800';
+                                                            break;
+                                                        default:
+                                                            echo 'bg-gray-100 text-gray-800';
+                                                    }
+                                                    ?>">
+                                                    <?php echo ucfirst(htmlspecialchars($order['status'])); ?>
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <div class="text-sm text-gray-900">
+                                                    RM<?php echo number_format($order['total_amount'], 2); ?>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <a href="order_details.php?id=<?php echo $order['id']; ?>" class="text-primary hover:text-primary-dark">
+                                                    View
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                            
+                            <div class="px-6 py-4 border-t border-gray-200">
+                                <a href="my_orders.php" class="text-primary hover:text-primary-dark font-medium">
+                                    View all orders
+                                </a>
+                            </div>
+                        </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

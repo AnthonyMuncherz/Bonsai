@@ -177,7 +177,7 @@ require_once 'includes/header.php';
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <?php foreach ($cart_items as $item): ?>
-                                <tr>
+                                <tr class="cursor-pointer hover:bg-gray-50" onclick="window.location='book.php?id=<?php echo $item['book_id']; ?>'">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0 h-16 w-16 bg-gray-100">
@@ -209,7 +209,8 @@ require_once 'includes/header.php';
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <input type="number" name="quantities[<?php echo $item['id']; ?>]" 
                                                value="<?php echo $item['quantity']; ?>" min="1" max="<?php echo $item['stock']; ?>" 
-                                               class="w-16 border border-gray-300 rounded px-2 py-1">
+                                               class="w-16 border border-gray-300 rounded px-2 py-1"
+                                               onclick="event.stopPropagation()">
                                         <div class="text-xs text-gray-500 mt-1">
                                             <?php echo $item['stock']; ?> available
                                         </div>
@@ -222,7 +223,7 @@ require_once 'includes/header.php';
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <a href="cart.php?remove=<?php echo $item['id']; ?>" 
                                            class="text-red-600 hover:text-red-900"
-                                           onclick="return confirm('Are you sure you want to remove this item?');">
+                                           onclick="event.stopPropagation(); return confirm('Are you sure you want to remove this item?');">
                                             Remove
                                         </a>
                                     </td>
@@ -254,9 +255,9 @@ require_once 'includes/header.php';
                                 <span>RM<?php echo number_format($total_price, 2); ?></span>
                             </div>
                         </div>
-                        <button type="button" class="w-full bg-primary text-white py-3 px-4 rounded-md hover:bg-primary-dark transition mt-4">
+                        <a href="checkout.php" class="block w-full bg-primary text-white py-3 px-4 rounded-md hover:bg-primary-dark transition mt-4 text-center">
                             Proceed to Checkout
-                        </button>
+                        </a>
                     </div>
                 </div>
             </form>

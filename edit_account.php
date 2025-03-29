@@ -49,6 +49,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $success_message = 'Your account information has been updated successfully';
                 // Update session
                 $_SESSION['username'] = $username;
+                
+                // Record activity
+                record_user_activity(
+                    $user_id,
+                    'account_update',
+                    "Updated account information (username and email)",
+                    null
+                );
             } else {
                 $error_message = 'Failed to update account information';
             }
@@ -93,6 +101,9 @@ require_once 'includes/header.php';
                             </li>
                             <li>
                                 <a href="change_password.php" class="block px-4 py-2 hover:bg-gray-100 rounded">Change Password</a>
+                            </li>
+                            <li>
+                                <a href="activity_history.php" class="block px-4 py-2 hover:bg-gray-100 rounded">Activity History</a>
                             </li>
                             <li>
                                 <a href="logout.php" class="block px-4 py-2 hover:bg-gray-100 rounded text-red-600">Logout</a>

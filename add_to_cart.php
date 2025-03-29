@@ -62,18 +62,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book_id'])) {
     $cart_item = $result->fetchArray(SQLITE3_ASSOC);
     
     if ($cart_item) {
-        // Update quantity if book already in cart
+        // Update quantity if item already exists in cart
         $new_quantity = $cart_item['quantity'] + $quantity;
-        
-        // Make sure we don't exceed available stock
-        if ($new_quantity > $book['stock']) {
-            $new_quantity = $book['stock'];
-        }
         
         $stmt = $db->prepare("UPDATE cart SET quantity = :quantity WHERE id = :id");
         $stmt->bindValue(':quantity', $new_quantity, SQLITE3_INTEGER);
         $stmt->bindValue(':id', $cart_item['id'], SQLITE3_INTEGER);
         $stmt->execute();
+        
+        // Record activity
+        $book_query = $db->prepare("SELECT title FROM books WHERE id = :book_id");
+        $book_query->bindValue(':book_id', $book_id, SQLITE3_INTEGER);
+        $book_result = $book_query->execute();
+        $book = $book_result->fetchArray(SQLITE3_ASSOC);
+        
+        if ($book) {
+            record_user_activity(
+                $user_id, 
+                'cart_update', 
+                "Updated quantity of \"{$book['title']}\" in cart to {$new_quantity}",
+                $book_id
+            );
+        }
+        
+        // Redirect back
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+            // Get total items in cart for AJAX response
+            $stmt = $db->prepare("SELECT SUM(quantity) as total FROM cart WHERE user_id = :user_id");
+            $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+            $result = $stmt->execute();
+            $total = $result->fetchArray(SQLITE3_ASSOC)['total'];
+            
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'message' => 'Item added to cart', 'total_items' => $total]);
+            exit;
+        }
+        
+        // Redirect for regular form submission
+        header('Location: cart.php?success=added');
+        exit;
     } else {
         // Add new item to cart
         $stmt = $db->prepare("INSERT INTO cart (user_id, book_id, quantity) VALUES (:user_id, :book_id, :quantity)");
@@ -81,24 +108,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book_id'])) {
         $stmt->bindValue(':book_id', $book_id, SQLITE3_INTEGER);
         $stmt->bindValue(':quantity', $quantity, SQLITE3_INTEGER);
         $stmt->execute();
-    }
-    
-    // Return success response
-    if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
-        // Get total items in cart for AJAX response
-        $stmt = $db->prepare("SELECT SUM(quantity) as total FROM cart WHERE user_id = :user_id");
-        $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
-        $result = $stmt->execute();
-        $total = $result->fetchArray(SQLITE3_ASSOC)['total'];
         
-        header('Content-Type: application/json');
-        echo json_encode(['success' => true, 'message' => 'Item added to cart', 'total_items' => $total]);
+        // Record activity
+        $book_query = $db->prepare("SELECT title FROM books WHERE id = :book_id");
+        $book_query->bindValue(':book_id', $book_id, SQLITE3_INTEGER);
+        $book_result = $book_query->execute();
+        $book = $book_result->fetchArray(SQLITE3_ASSOC);
+        
+        if ($book) {
+            record_user_activity(
+                $user_id, 
+                'cart_add', 
+                "Added \"{$book['title']}\" to cart",
+                $book_id
+            );
+        }
+        
+        // Redirect back
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+            // Get total items in cart for AJAX response
+            $stmt = $db->prepare("SELECT SUM(quantity) as total FROM cart WHERE user_id = :user_id");
+            $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+            $result = $stmt->execute();
+            $total = $result->fetchArray(SQLITE3_ASSOC)['total'];
+            
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'message' => 'Item added to cart', 'total_items' => $total]);
+            exit;
+        }
+        
+        // Redirect for regular form submission
+        header('Location: cart.php?success=added');
         exit;
     }
-    
-    // Redirect for regular form submission
-    header('Location: cart.php?success=added');
-    exit;
 } else {
     // Invalid request
     if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {

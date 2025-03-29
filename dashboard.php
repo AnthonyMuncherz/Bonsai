@@ -18,6 +18,9 @@ $query->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
 $result = $query->execute();
 $user = $result->fetchArray(SQLITE3_ASSOC);
 
+// Get recent activities - limit to 2 for dashboard display
+$recent_activities = get_recent_user_activities($user_id, 2);
+
 // Set default values in case user data is not found
 $username = 'Unknown';
 $email = 'Unknown';
@@ -61,6 +64,9 @@ if ($user && is_array($user)) {
                                 <a href="change_password.php" class="block px-4 py-2 hover:bg-gray-100 rounded">Change Password</a>
                             </li>
                             <li>
+                                <a href="activity_history.php" class="block px-4 py-2 hover:bg-gray-100 rounded">Activity History</a>
+                            </li>
+                            <li>
                                 <a href="logout.php" class="block px-4 py-2 hover:bg-gray-100 rounded text-red-600">Logout</a>
                             </li>
                         </ul>
@@ -80,7 +86,26 @@ if ($user && is_array($user)) {
                                 </div>
                                 <div>
                                     <h3 class="text-lg font-semibold mb-3">Recent Activity</h3>
-                                    <p class="text-gray-600">No recent activity to display.</p>
+                                    <?php if (empty($recent_activities)): ?>
+                                        <p class="text-gray-600">No recent activity to display.</p>
+                                    <?php else: ?>
+                                        <ul class="space-y-2 mb-4">
+                                            <?php foreach ($recent_activities as $activity): ?>
+                                                <li class="text-gray-700">
+                                                    <div class="flex items-start">
+                                                        <span class="mr-2">•</span>
+                                                        <div>
+                                                            <p><?php echo htmlspecialchars($activity['activity_description']); ?></p>
+                                                            <p class="text-xs text-gray-500">
+                                                                <?php echo date('M j, Y, g:i a', strtotime($activity['created_at'])); ?>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                        <a href="activity_history.php" class="text-primary hover:underline text-sm font-medium">See more...</a>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>

@@ -6,6 +6,14 @@
 // Set the database file path
 $db_path = __DIR__ . '/../db/sejuta_ranting.db';
 
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Include functions file
+require_once __DIR__ . '/functions.php';
+
 // Create the database connection
 function get_db_connection() {
     global $db_path;
@@ -68,6 +76,19 @@ function get_db_connection() {
                 )
             ");
             
+            // Create user_activities table
+            $db->exec("
+                CREATE TABLE user_activities (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    user_id INTEGER NOT NULL,
+                    activity_type VARCHAR(50) NOT NULL,
+                    activity_description TEXT NOT NULL,
+                    related_id INTEGER,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (user_id) REFERENCES users(id)
+                )
+            ");
+            
             // Insert sample books data
             $db->exec("
                 INSERT INTO books (title, author, description, price, image, category, stock) 
@@ -91,7 +112,12 @@ function get_db_connection() {
             
             return $db;
         } else {
-            return new SQLite3($db_path);
+            $db = new SQLite3($db_path);
+            // Configure SQLite to minimize locking issues
+            $db->exec('PRAGMA journal_mode = WAL;');
+            $db->exec('PRAGMA synchronous = NORMAL;');
+            $db->exec('PRAGMA busy_timeout = 5000;');
+            return $db;
         }
     } catch (Exception $e) {
         die("Database connection failed: " . $e->getMessage());
@@ -110,9 +136,4 @@ function user_exists($email, $username) {
     $user = $result->fetchArray(SQLITE3_ASSOC);
     
     return $user !== false;
-}
-
-// Initialize the session
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
 } 

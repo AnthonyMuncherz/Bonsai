@@ -52,6 +52,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book_id'])) {
         $stmt->bindValue(':id', $wishlist_item['id'], SQLITE3_INTEGER);
         $stmt->execute();
         
+        // Get book title for activity
+        $book_query = $db->prepare("SELECT title FROM books WHERE id = :book_id");
+        $book_query->bindValue(':book_id', $book_id, SQLITE3_INTEGER);
+        $book_result = $book_query->execute();
+        $book = $book_result->fetchArray(SQLITE3_ASSOC);
+        
+        if ($book) {
+            record_user_activity(
+                $user_id,
+                'wishlist_remove',
+                "Removed \"{$book['title']}\" from wishlist",
+                $book_id
+            );
+        }
+        
         // Return success response with removed status
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
             header('Content-Type: application/json');
@@ -68,6 +83,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book_id'])) {
         $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
         $stmt->bindValue(':book_id', $book_id, SQLITE3_INTEGER);
         $stmt->execute();
+        
+        // Get book title for activity
+        $book_query = $db->prepare("SELECT title FROM books WHERE id = :book_id");
+        $book_query->bindValue(':book_id', $book_id, SQLITE3_INTEGER);
+        $book_result = $book_query->execute();
+        $book = $book_result->fetchArray(SQLITE3_ASSOC);
+        
+        if ($book) {
+            record_user_activity(
+                $user_id,
+                'wishlist_add',
+                "Added \"{$book['title']}\" to wishlist",
+                $book_id
+            );
+        }
         
         // Return success response with added status
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {

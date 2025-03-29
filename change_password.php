@@ -47,6 +47,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             if ($result) {
                 $success_message = 'Your password has been updated successfully';
+                
+                // Record activity
+                record_user_activity(
+                    $user_id,
+                    'password_change',
+                    "Changed account password",
+                    null
+                );
             } else {
                 $error_message = 'Failed to update password';
             }
@@ -87,6 +95,9 @@ require_once 'includes/header.php';
                             </li>
                             <li>
                                 <a href="change_password.php" class="block px-4 py-2 bg-gray-100 rounded font-medium">Change Password</a>
+                            </li>
+                            <li>
+                                <a href="activity_history.php" class="block px-4 py-2 hover:bg-gray-100 rounded">Activity History</a>
                             </li>
                             <li>
                                 <a href="logout.php" class="block px-4 py-2 hover:bg-gray-100 rounded text-red-600">Logout</a>

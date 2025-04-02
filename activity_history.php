@@ -23,13 +23,16 @@ $current_page = 1; // Default to page 1
 // Validate and convert page parameter to integer
 if (isset($_GET['page']) && ctype_digit($_GET['page']) && $_GET['page'] > 0) {
     $current_page = (int)$_GET['page'];
+} else {
+    $current_page = 1;
 }
 
-// Calculate offset with explicit integer typing
-$current_page = (int)$current_page;
+// Ensure current_page is never less than 1
+$current_page = max(1, intval($current_page));
 $items_per_page = (int)$items_per_page;
+// Recalculate offset with the corrected page number
 $offset = ($current_page - 1) * $items_per_page;
-$offset = (int)$offset;
+$offset = (int)$offset; // Ensure offset is an integer
 
 // Fetch activities with error handling
 $activities = [];
@@ -63,11 +66,19 @@ try {
         LIMIT :limit OFFSET :offset
     ");
     
-    $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
-    $stmt->bindValue(':limit', $items_per_page, SQLITE3_INTEGER);
-    $stmt->bindValue(':offset', $offset, SQLITE3_INTEGER);
+    // Debug the values for troubleshooting
+    error_log("Pagination Debug - Current Page: {$current_page}, Items Per Page: {$items_per_page}, Offset: {$offset}");
     
+    // SQLite needs precise parameter typing
+    $stmt->bindValue(':user_id', $user_id, SQLITE3_INTEGER);
+    $stmt->bindValue(':limit', (int)$items_per_page, SQLITE3_INTEGER);
+    $stmt->bindValue(':offset', (int)$offset, SQLITE3_INTEGER);
+    
+    // Execute the query
     $result = $stmt->execute();
+    if (!$result) {
+        error_log("SQLite query failed: " . $db->lastErrorMsg());
+    }
     
     // Collect activities
     while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
@@ -180,37 +191,52 @@ require_once 'includes/header.php';
                                     <?php endforeach; ?>
                                 </div>
                                 
-                                <!-- Extremely simplified pagination to avoid any calculation errors -->
+                                <!-- Simple direct links pagination -->
                                 <?php if ((int)$total_pages > 1): ?>
                                     <div class="flex justify-center mt-6">
-                                        <nav class="inline-flex shadow-sm">
-                                            <!-- Previous button -->
-                                            <?php if ((int)$current_page > 1): ?>
-                                                <a href="activity_history.php?page=<?php echo (int)$current_page - 1; ?>" class="px-3 py-2 bg-white border border-gray-300 text-sm font-medium rounded-l-md text-gray-700 hover:bg-gray-50">
-                                                    Previous
+                                        <div class="bg-white rounded-md border border-gray-300 flex">
+                                            <!-- Using simple numbered pagination with direct links -->
+                                            <?php 
+                                            $curr_page = (int)$current_page;
+                                            $total = (int)$total_pages;
+                                            
+                                            // Previous button
+                                            if ($curr_page > 1): ?>
+                                                <a href="activity_history.php?page=<?php echo ($curr_page - 1); ?>"
+                                                   class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 border-r border-gray-300">
+                                                    «
                                                 </a>
                                             <?php else: ?>
-                                                <span class="px-3 py-2 bg-gray-100 border border-gray-300 text-sm font-medium rounded-l-md text-gray-400 cursor-not-allowed">
-                                                    Previous
-                                                </span>
+                                                <span class="px-4 py-2 text-sm text-gray-400 border-r border-gray-300">«</span>
                                             <?php endif; ?>
                                             
-                                            <!-- Current page indicator -->
-                                            <span class="px-3 py-2 bg-blue-50 border-t border-b border-gray-300 text-sm font-medium text-blue-700">
-                                                Page <?php echo (int)$current_page; ?> of <?php echo (int)$total_pages; ?>
-                                            </span>
+                                            <!-- Page numbers - just show pages 1 through 5 -->
+                                            <?php 
+                                            $max_page_display = min(5, $total); 
+                                            for ($i = 1; $i <= $max_page_display; $i++): 
+                                            ?>
+                                                <?php if ($i == $curr_page): ?>
+                                                    <span class="px-4 py-2 text-sm text-white bg-primary border-r border-gray-300">
+                                                        <?php echo $i; ?>
+                                                    </span>
+                                                <?php else: ?>
+                                                    <a href="activity_history.php?page=<?php echo $i; ?>"
+                                                       class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 border-r border-gray-300">
+                                                        <?php echo $i; ?>
+                                                    </a>
+                                                <?php endif; ?>
+                                            <?php endfor; ?>
                                             
                                             <!-- Next button -->
-                                            <?php if ((int)$current_page < (int)$total_pages): ?>
-                                                <a href="activity_history.php?page=<?php echo (int)$current_page + 1; ?>" class="px-3 py-2 bg-white border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 hover:bg-gray-50">
-                                                    Next
+                                            <?php if ($curr_page < $total): ?>
+                                                <a href="activity_history.php?page=<?php echo ($curr_page + 1); ?>"
+                                                   class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                                    »
                                                 </a>
                                             <?php else: ?>
-                                                <span class="px-3 py-2 bg-gray-100 border border-gray-300 text-sm font-medium rounded-r-md text-gray-400 cursor-not-allowed">
-                                                    Next
-                                                </span>
+                                                <span class="px-4 py-2 text-sm text-gray-400">»</span>
                                             <?php endif; ?>
-                                        </nav>
+                                        </div>
                                     </div>
                                 <?php endif; ?>
                             <?php endif; ?>

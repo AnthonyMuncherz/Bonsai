@@ -76,5 +76,33 @@
     <script src="/Bonsai/assets/dist/main.bundle.js"></script>
     <!-- AOS Script -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Process activity logs asynchronously after page loads -->
+    <?php if (file_exists(__DIR__ . '/../logs/needs_processing')): ?>
+    <script>
+        // Use a request to process activity logs after page loads
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', 'process_activity_logs.php?nocache=' + Math.random(), true);
+                xhr.timeout = 30000; // 30 second timeout
+                
+                xhr.onload = function() {
+                    console.log('Activity logs processed');
+                };
+                
+                xhr.onerror = function() {
+                    console.log('Error processing activity logs');
+                };
+                
+                xhr.ontimeout = function() {
+                    console.log('Timeout while processing activity logs');
+                };
+                
+                xhr.send();
+            }, 1000); // Delay by 1 second to ensure the page is fully loaded
+        });
+    </script>
+    <?php endif; ?>
 </body>
 </html> 

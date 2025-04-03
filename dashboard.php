@@ -1,13 +1,21 @@
 <?php
 $page_title = 'My Account';
 require_once 'includes/db.php';
-require_once 'includes/header.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit;
 }
+
+// Check if user is admin and redirect to admin dashboard
+if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1) {
+    header('Location: admin-dashboard.php');
+    exit;
+}
+
+// Include header after all redirects
+require_once 'includes/header.php';
 
 // Get user information
 $user_id = $_SESSION['user_id'];

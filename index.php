@@ -153,7 +153,7 @@ require_once 'components/project-card.php';
 </section>
 
 <!-- Testimonial Section -->
-<section class="bg-dark-olive py-16 md:py-24 mb-1 relative z-50">
+<section class="bg-dark-olive py-16 md:py-24 relative z-50">
     <div class="absolute inset-0 opacity-60 bg-cover bg-center" style="background-image: url('/Bonsai/Images/Index/tree-dark-background.jpg');"></div>
     <div class="container mx-auto relative z-10">
         <div class="max-w-3xl mx-auto text-center text-white" data-aos="zoom-in" data-aos-duration="1200">

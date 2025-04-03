@@ -170,7 +170,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                     <a href="cart.php" class="block">Cart</a>
                                     <a href="wishlist.php" class="block">Wishlist</a>
                                     <?php if($_SESSION['is_admin']): ?>
-                                        <a href="admin.php" class="block">Admin Panel</a>
+                                        <a href="admin-dashboard.php" class="block">Admin Panel</a>
                                     <?php endif; ?>
                                     <a href="logout.php" class="block">Logout</a>
                                 </div>
@@ -233,7 +233,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                                     <a href="cart.php" class="block py-1">Cart</a>
                                     <a href="wishlist.php" class="block py-1">Wishlist</a>
                                     <?php if($_SESSION['is_admin']): ?>
-                                        <a href="admin.php" class="block py-1">Admin Panel</a>
+                                        <a href="admin-dashboard.php" class="block py-1">Admin Panel</a>
                                     <?php endif; ?>
                                     <a href="logout.php" class="block py-1">Logout</a>
                                 </div>

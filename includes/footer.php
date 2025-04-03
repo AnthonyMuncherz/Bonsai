@@ -1,7 +1,7 @@
         </main>
 
         <!-- Footer -->
-        <footer class="bg-dark-olive text-white py-16">
+        <footer class="bg-dark-olive text-white py-16 -mt-1">
             <div class="container mx-auto">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     <div class="col-span-1 lg:col-span-2" data-aos="fade-up" data-aos-duration="1000">

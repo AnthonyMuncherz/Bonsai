@@ -1,13 +1,19 @@
 <?php
-$page_title = 'Admin Panel';
+$page_title = 'Admin Dashboard';
 require_once 'includes/db.php';
-require_once 'includes/header.php';
 
 // Check if user is logged in and is admin
 if (!isset($_SESSION['user_id']) || $_SESSION['is_admin'] != 1) {
     header('Location: index.php');
     exit;
 }
+
+// Redirect to the new admin dashboard page
+header('Location: admin-dashboard.php');
+exit;
+
+// Code below this point is not executed
+require_once 'includes/header.php';
 
 // Get all users
 $db = get_db_connection();

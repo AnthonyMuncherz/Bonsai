@@ -15,7 +15,10 @@ require_once 'includes/header.php';
 $add_book_exists = file_exists('add_book.php');
 $manage_books_exists = file_exists('manage_books.php');
 $edit_book_exists = file_exists('edit_book.php');
-$missing_files = !$add_book_exists || !$manage_books_exists || !$edit_book_exists;
+$order_management_exists = file_exists('admin-orders.php');
+$user_management_exists = file_exists('admin-users.php');
+$book_inventory_exists = file_exists('admin-books.php');
+$missing_files = !$add_book_exists || !$manage_books_exists || !$edit_book_exists || !$order_management_exists || !$user_management_exists || !$book_inventory_exists;
 
 // Initialize database connection
 $db = get_db_connection();
@@ -71,7 +74,7 @@ $order_query = $db->query("SELECT o.id, o.order_number, o.user_id, o.total_amoun
                           FROM orders o 
                           JOIN users u ON o.user_id = u.id 
                           ORDER BY o.created_at DESC 
-                          LIMIT 10");
+                          LIMIT 5");
 $orders = [];
 while ($row = $order_query->fetchArray(SQLITE3_ASSOC)) {
     $orders[] = $row;
@@ -119,16 +122,16 @@ $book_count = $book_count_query->fetchArray(SQLITE3_ASSOC)['count'];
                     <div class="md:w-1/4 mb-8 md:mb-0">
                         <ul class="space-y-2">
                             <li>
-                                <a href="#dashboard" class="block px-4 py-2 bg-gray-100 rounded font-medium">Dashboard Overview</a>
+                                <a href="admin-dashboard.php" class="block px-4 py-2 bg-gray-100 rounded font-medium">Dashboard Overview</a>
                             </li>
                             <li>
-                                <a href="#orders" class="block px-4 py-2 hover:bg-gray-100 rounded">Order Management</a>
+                                <a href="admin-orders.php" class="block px-4 py-2 hover:bg-gray-100 rounded">Order Management</a>
                             </li>
                             <li>
-                                <a href="#users" class="block px-4 py-2 hover:bg-gray-100 rounded">User Management</a>
+                                <a href="admin-users.php" class="block px-4 py-2 hover:bg-gray-100 rounded">User Management</a>
                             </li>
                             <li>
-                                <a href="#books" class="block px-4 py-2 hover:bg-gray-100 rounded">Book Inventory</a>
+                                <a href="admin-books.php" class="block px-4 py-2 hover:bg-gray-100 rounded">Book Inventory</a>
                             </li>
                             <li>
                                 <a href="catalogue.php" class="block px-4 py-2 hover:bg-gray-100 rounded">Book Catalogue</a>
@@ -155,6 +158,9 @@ $book_count = $book_count_query->fetchArray(SQLITE3_ASSOC)['count'];
                                         <?php if(!$add_book_exists): ?>Create <code>add_book.php</code> to enable adding books.<?php endif; ?>
                                         <?php if(!$manage_books_exists): ?>Create <code>manage_books.php</code> to enable book management.<?php endif; ?>
                                         <?php if(!$edit_book_exists): ?>Create <code>edit_book.php</code> to enable editing books.<?php endif; ?>
+                                        <?php if(!$order_management_exists): ?>Create <code>admin-orders.php</code> for order management.<?php endif; ?>
+                                        <?php if(!$user_management_exists): ?>Create <code>admin-users.php</code> for user management.<?php endif; ?>
+                                        <?php if(!$book_inventory_exists): ?>Create <code>admin-books.php</code> for book inventory.<?php endif; ?>
                                     </p>
                                 </div>
                             </div>
@@ -189,7 +195,10 @@ $book_count = $book_count_query->fetchArray(SQLITE3_ASSOC)['count'];
                             
                             <!-- Recent Orders -->
                             <div class="mb-8">
-                                <h3 class="text-xl font-semibold mb-4">Recent Orders</h3>
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-xl font-semibold">Recent Orders</h3>
+                                    <a href="admin-orders.php" class="text-primary hover:underline">View All Orders</a>
+                                </div>
                                 <div class="bg-white border rounded-lg overflow-hidden">
                                     <div class="overflow-x-auto">
                                         <table class="min-w-full divide-y divide-gray-200">
@@ -263,7 +272,10 @@ $book_count = $book_count_query->fetchArray(SQLITE3_ASSOC)['count'];
                             
                             <!-- Low Stock Books -->
                             <div>
-                                <h3 class="text-xl font-semibold mb-4">Low Stock Alert</h3>
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="text-xl font-semibold">Low Stock Alert</h3>
+                                    <a href="admin-books.php" class="text-primary hover:underline">Manage Inventory</a>
+                                </div>
                                 <?php if (empty($low_stock_books)): ?>
                                     <p class="text-green-500 font-medium">All books have sufficient stock levels.</p>
                                 <?php else: ?>
@@ -301,161 +313,41 @@ $book_count = $book_count_query->fetchArray(SQLITE3_ASSOC)['count'];
                                     </div>
                                 <?php endif; ?>
                             </div>
-                        </div>
-                        
-                        <!-- Order Management Section -->
-                        <div id="orders" class="mt-12 pt-8 border-t border-gray-200">
-                            <h2 class="text-2xl font-bold mb-6">Order Management</h2>
                             
-                            <div class="bg-white border rounded-lg overflow-hidden">
-                                <div class="overflow-x-auto">
-                                    <table class="min-w-full divide-y divide-gray-200">
-                                        <thead class="bg-gray-50">
-                                            <tr>
-                                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order #</th>
-                                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="bg-white divide-y divide-gray-200">
-                                            <?php if (empty($orders)): ?>
-                                                <tr>
-                                                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">No orders found</td>
-                                                </tr>
-                                            <?php else: ?>
-                                                <?php foreach ($orders as $order): ?>
-                                                    <tr>
-                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                            <?php echo htmlspecialchars($order['order_number']); ?>
-                                                        </td>
-                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                            <?php echo htmlspecialchars($order['username']); ?>
-                                                        </td>
-                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                            <?php echo date('M j, Y', strtotime($order['created_at'])); ?>
-                                                        </td>
-                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                            RM<?php echo number_format($order['total_amount'], 2); ?>
-                                                        </td>
-                                                        <td class="px-6 py-4 whitespace-nowrap">
-                                                            <form action="admin-dashboard.php#orders" method="POST">
-                                                                <input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">
-                                                                <input type="hidden" name="update_order_status" value="1">
-                                                                <select name="status" class="rounded border border-gray-300 text-sm p-1" onchange="this.form.submit()">
-                                                                    <option value="pending" <?php echo $order['status'] == 'pending' ? 'selected' : ''; ?>>Pending</option>
-                                                                    <option value="processing" <?php echo $order['status'] == 'processing' ? 'selected' : ''; ?>>Processing</option>
-                                                                    <option value="shipped" <?php echo $order['status'] == 'shipped' ? 'selected' : ''; ?>>Shipped</option>
-                                                                    <option value="delivered" <?php echo $order['status'] == 'delivered' ? 'selected' : ''; ?>>Delivered</option>
-                                                                    <option value="cancelled" <?php echo $order['status'] == 'cancelled' ? 'selected' : ''; ?>>Cancelled</option>
-                                                                </select>
-                                                            </form>
-                                                        </td>
-                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                            <a href="order_details.php?id=<?php echo $order['id']; ?>" class="text-indigo-600 hover:text-indigo-900">View Details</a>
-                                                        </td>
-                                                    </tr>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
-                                        </tbody>
-                                    </table>
+                            <!-- Quick Access -->
+                            <div class="mt-8">
+                                <h3 class="text-xl font-semibold mb-4">Quick Access</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <a href="admin-orders.php" class="bg-white p-5 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow text-center">
+                                        <div class="text-primary text-4xl mb-2">
+                                            <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                                            </svg>
+                                        </div>
+                                        <h4 class="font-semibold text-lg">Manage Orders</h4>
+                                        <p class="text-sm text-gray-600 mt-1">Update order status and view details</p>
+                                    </a>
+                                    
+                                    <a href="admin-users.php" class="bg-white p-5 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow text-center">
+                                        <div class="text-primary text-4xl mb-2">
+                                            <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                            </svg>
+                                        </div>
+                                        <h4 class="font-semibold text-lg">Manage Users</h4>
+                                        <p class="text-sm text-gray-600 mt-1">Update user roles and information</p>
+                                    </a>
+                                    
+                                    <a href="admin-books.php" class="bg-white p-5 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow text-center">
+                                        <div class="text-primary text-4xl mb-2">
+                                            <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                            </svg>
+                                        </div>
+                                        <h4 class="font-semibold text-lg">Manage Books</h4>
+                                        <p class="text-sm text-gray-600 mt-1">Add, edit, and manage book inventory</p>
+                                    </a>
                                 </div>
-                            </div>
-                        </div>
-                        
-                        <!-- User Management Section -->
-                        <div id="users" class="mt-12 pt-8 border-t border-gray-200">
-                            <div class="flex justify-between items-center mb-6">
-                                <h2 class="text-2xl font-bold">User Management</h2>
-                                <a href="#" class="btn btn-primary">Add New User</a>
-                            </div>
-                            
-                            <div class="bg-white border rounded-lg overflow-hidden">
-                                <div class="overflow-x-auto">
-                                    <table class="min-w-full divide-y divide-gray-200">
-                                        <thead class="bg-gray-50">
-                                            <tr>
-                                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
-                                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Registered</th>
-                                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="bg-white divide-y divide-gray-200">
-                                            <?php foreach ($users as $user): ?>
-                                                <tr>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?php echo $user['id']; ?></td>
-                                                    <td class="px-6 py-4 whitespace-nowrap">
-                                                        <div class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($user['username']); ?></div>
-                                                    </td>
-                                                    <td class="px-6 py-4 whitespace-nowrap">
-                                                        <div class="text-sm text-gray-500"><?php echo htmlspecialchars($user['email']); ?></div>
-                                                    </td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                        <?php echo date('M j, Y', strtotime($user['created_at'])); ?>
-                                                    </td>
-                                                    <td class="px-6 py-4 whitespace-nowrap">
-                                                        <form action="admin-dashboard.php#users" method="POST">
-                                                            <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-                                                            <input type="hidden" name="update_user_role" value="1">
-                                                            <select name="is_admin" class="rounded border border-gray-300 text-sm p-1" onchange="this.form.submit()">
-                                                                <option value="0" <?php echo $user['is_admin'] == 0 ? 'selected' : ''; ?>>User</option>
-                                                                <option value="1" <?php echo $user['is_admin'] == 1 ? 'selected' : ''; ?>>Admin</option>
-                                                            </select>
-                                                        </form>
-                                                    </td>
-                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                        <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
-                                                        <?php if ($user['id'] != $_SESSION['user_id']): ?>
-                                                            <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                </tr>
-                                            <?php endforeach; ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Book Inventory Section -->
-                        <div id="books" class="mt-12 pt-8 border-t border-gray-200">
-                            <div class="flex justify-between items-center mb-6">
-                                <h2 class="text-2xl font-bold">Book Inventory</h2>
-                                <a href="add_book.php" class="btn btn-primary">Add New Book</a>
-                            </div>
-                            
-                            <p class="mb-4">Manage your book inventory by viewing all books in the <a href="catalogue.php" class="text-primary hover:underline">Book Catalogue</a>.</p>
-                            
-                            <!-- Quick Actions -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                                <a href="add_book.php" class="bg-white border border-primary rounded-lg p-6 flex items-center hover:shadow-md transition-shadow">
-                                    <div class="bg-primary bg-opacity-10 p-3 rounded-full mr-4">
-                                        <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-semibold text-lg">Add New Book</h3>
-                                        <p class="text-sm text-gray-600">Add a new book to your catalogue</p>
-                                    </div>
-                                </a>
-                                
-                                <a href="catalogue.php" class="bg-white border border-gray-200 rounded-lg p-6 flex items-center hover:shadow-md transition-shadow">
-                                    <div class="bg-blue-100 p-3 rounded-full mr-4">
-                                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-semibold text-lg">View Book Catalogue</h3>
-                                        <p class="text-sm text-gray-600">Manage your entire book inventory</p>
-                                    </div>
-                                </a>
                             </div>
                         </div>
                     </div>

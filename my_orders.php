@@ -29,14 +29,14 @@ while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
 $db->close();
 
 require_once 'includes/header.php';
-?>
+require_once 'components/breadcrumbs.php';
 
-<!-- Account Header -->
-<section class="bg-primary py-12">
-    <div class="container mx-auto">
-        <h1 class="text-4xl font-bold text-white text-center">My Account</h1>
-    </div>
-</section>
+echo breadcrumbs([
+    'Home' => 'index.php',
+    'My Account' => 'dashboard.php',
+    'My Orders' => ''
+], '/Bonsai/Images/Index/tree-dark-background.jpg', 'My Account');
+?>
 
 <!-- My Orders -->
 <section class="py-12">

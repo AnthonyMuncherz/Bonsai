@@ -74,6 +74,24 @@ $result = $stmt->execute();
         <h1 class="text-4xl font-bold text-center">Bonsai Book Catalogue</h1>
         <p class="text-center text-gray-600 mt-2 mb-8">Explore our collection of specialized bonsai books</p>
         
+        <?php if($_SESSION['is_admin'] == 1): ?>
+        <!-- Admin Actions -->
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row gap-4 justify-center mb-6">
+            <a href="add_book.php" class="btn btn-primary flex items-center justify-center">
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
+                </svg>
+                Add New Book
+            </a>
+            <a href="manage_books.php" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center justify-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Manage Books
+            </a>
+        </div>
+        <?php endif; ?>
+        
         <!-- Search and Filter -->
         <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6 mt-8">
             <form method="GET" action="catalogue.php" class="flex flex-col md:flex-row gap-4">

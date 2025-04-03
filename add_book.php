@@ -13,6 +13,7 @@ $db = get_db_connection();
 
 // Define variables and set to empty values
 $title = $author = $description = $price = $category = $stock = '';
+$publisher = $isbn = $pages = $published_year = ''; // New fields
 $errors = [];
 $success_message = '';
 
@@ -25,6 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $price = trim($_POST['price'] ?? '');
     $category = trim($_POST['category'] ?? '');
     $stock = trim($_POST['stock'] ?? '');
+    $publisher = trim($_POST['publisher'] ?? ''); // New field
+    $isbn = trim($_POST['isbn'] ?? ''); // New field
+    $pages = trim($_POST['pages'] ?? ''); // New field
+    $published_year = trim($_POST['published_year'] ?? ''); // New field
     
     // Validate fields
     if (empty($title)) {
@@ -49,6 +54,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if (empty($stock) || !is_numeric($stock) || $stock < 0) {
         $errors[] = 'Valid stock quantity is required';
+    }
+
+    // Validate new fields
+    if (empty($publisher)) {
+        $errors[] = 'Publisher is required';
+    }
+    
+    if (empty($isbn)) {
+        $errors[] = 'ISBN is required';
+    }
+    
+    if (empty($pages) || !is_numeric($pages) || $pages <= 0) {
+        $errors[] = 'Valid page count is required';
+    }
+    
+    if (empty($published_year) || !is_numeric($published_year) || $published_year <= 0) {
+        $errors[] = 'Valid publication year is required';
     }
     
     // Handle file upload
@@ -79,8 +101,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // If no errors, insert the book into database
     if (empty($errors)) {
         $query = $db->prepare("
-            INSERT INTO books (title, author, description, price, image, category, stock, created_at)
-            VALUES (:title, :author, :description, :price, :image, :category, :stock, datetime('now'))
+            INSERT INTO books (title, author, description, price, image, category, stock, publisher, isbn, pages, published_year, created_at)
+            VALUES (:title, :author, :description, :price, :image, :category, :stock, :publisher, :isbn, :pages, :published_year, datetime('now'))
         ");
         
         $query->bindValue(':title', $title, SQLITE3_TEXT);
@@ -90,6 +112,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $query->bindValue(':image', $image_name, SQLITE3_TEXT);
         $query->bindValue(':category', $category, SQLITE3_TEXT);
         $query->bindValue(':stock', $stock, SQLITE3_INTEGER);
+        $query->bindValue(':publisher', $publisher, SQLITE3_TEXT);
+        $query->bindValue(':isbn', $isbn, SQLITE3_TEXT);
+        $query->bindValue(':pages', $pages, SQLITE3_INTEGER);
+        $query->bindValue(':published_year', $published_year, SQLITE3_INTEGER);
         
         $result = $query->execute();
         
@@ -107,6 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $success_message = 'Book added successfully!';
             // Clear form fields after successful submission
             $title = $author = $description = $price = $category = $stock = '';
+            $publisher = $isbn = $pages = $published_year = ''; // Clear new fields
         } else {
             $errors[] = 'Failed to add book. Please try again.';
         }
@@ -200,12 +227,42 @@ if (empty($categories)) {
                         <textarea name="description" id="description" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary" required><?php echo htmlspecialchars($description); ?></textarea>
                     </div>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- New fields for publisher, ISBN, pages, and publication year -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="publisher" class="block text-sm font-medium text-gray-700 mb-1">Publisher <span class="text-red-500">*</span></label>
+                            <input type="text" name="publisher" id="publisher" value="<?php echo htmlspecialchars($publisher); ?>" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary" required>
+                        </div>
+                        
+                        <div>
+                            <label for="isbn" class="block text-sm font-medium text-gray-700 mb-1">ISBN <span class="text-red-500">*</span></label>
+                            <input type="text" name="isbn" id="isbn" value="<?php echo htmlspecialchars($isbn); ?>" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary" required>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                         <div>
                             <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Price (RM) <span class="text-red-500">*</span></label>
                             <input type="number" name="price" id="price" value="<?php echo htmlspecialchars($price); ?>" step="0.01" min="0" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary" required>
                         </div>
                         
+                        <div>
+                            <label for="pages" class="block text-sm font-medium text-gray-700 mb-1">Pages <span class="text-red-500">*</span></label>
+                            <input type="number" name="pages" id="pages" value="<?php echo htmlspecialchars($pages); ?>" min="1" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary" required>
+                        </div>
+                        
+                        <div>
+                            <label for="published_year" class="block text-sm font-medium text-gray-700 mb-1">Year Published <span class="text-red-500">*</span></label>
+                            <input type="number" name="published_year" id="published_year" value="<?php echo htmlspecialchars($published_year); ?>" min="1900" max="<?php echo date('Y'); ?>" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary" required>
+                        </div>
+                        
+                        <div>
+                            <label for="stock" class="block text-sm font-medium text-gray-700 mb-1">Stock Quantity <span class="text-red-500">*</span></label>
+                            <input type="number" name="stock" id="stock" value="<?php echo htmlspecialchars($stock); ?>" min="0" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary" required>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category <span class="text-red-500">*</span></label>
                             <select name="category" id="category" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary">
@@ -222,11 +279,6 @@ if (empty($categories)) {
                         <div id="new-category-container" class="hidden">
                             <label for="new_category" class="block text-sm font-medium text-gray-700 mb-1">New Category <span class="text-red-500">*</span></label>
                             <input type="text" name="new_category" id="new_category" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary">
-                        </div>
-                        
-                        <div>
-                            <label for="stock" class="block text-sm font-medium text-gray-700 mb-1">Stock Quantity <span class="text-red-500">*</span></label>
-                            <input type="number" name="stock" id="stock" value="<?php echo htmlspecialchars($stock); ?>" min="0" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary" required>
                         </div>
                     </div>
                     

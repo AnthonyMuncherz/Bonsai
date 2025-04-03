@@ -11,6 +11,89 @@ if (!isset($_SESSION['user_id']) || $_SESSION['is_admin'] != 1) {
 // Initialize database connection
 $db = get_db_connection();
 
+// Add new user
+if (isset($_POST['add_user'])) {
+    // Get form data
+    $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
+    $password = $_POST['password'];
+    $confirm_password = $_POST['confirm_password'];
+    $is_admin = isset($_POST['is_admin']) ? 1 : 0;
+    
+    $errors = [];
+    
+    // Validate username
+    if (empty($username)) {
+        $errors[] = "Username is required";
+    } else {
+        // Check if username already exists
+        $check_query = $db->prepare("SELECT id FROM users WHERE username = :username");
+        $check_query->bindValue(':username', $username, SQLITE3_TEXT);
+        $result = $check_query->execute();
+        if ($result->fetchArray()) {
+            $errors[] = "Username already exists";
+        }
+    }
+    
+    // Validate email
+    if (empty($email)) {
+        $errors[] = "Email is required";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = "Invalid email format";
+    } else {
+        // Check if email already exists
+        $check_query = $db->prepare("SELECT id FROM users WHERE email = :email");
+        $check_query->bindValue(':email', $email, SQLITE3_TEXT);
+        $result = $check_query->execute();
+        if ($result->fetchArray()) {
+            $errors[] = "Email already exists";
+        }
+    }
+    
+    // Validate password
+    if (empty($password)) {
+        $errors[] = "Password is required";
+    } elseif (strlen($password) < 6) {
+        $errors[] = "Password must be at least 6 characters";
+    } elseif ($password !== $confirm_password) {
+        $errors[] = "Passwords do not match";
+    }
+    
+    // If no errors, add user
+    if (empty($errors)) {
+        // Hash the password
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        
+        // Add user
+        $insert_query = $db->prepare("INSERT INTO users (username, email, password, is_admin, created_at) VALUES (:username, :email, :password, :is_admin, :created_at)");
+        $insert_query->bindValue(':username', $username, SQLITE3_TEXT);
+        $insert_query->bindValue(':email', $email, SQLITE3_TEXT);
+        $insert_query->bindValue(':password', $hashed_password, SQLITE3_TEXT);
+        $insert_query->bindValue(':is_admin', $is_admin, SQLITE3_INTEGER);
+        $insert_query->bindValue(':created_at', date('Y-m-d H:i:s'), SQLITE3_TEXT);
+        $insert_query->execute();
+        
+        // Get the new user ID
+        $new_user_id = $db->lastInsertRowID();
+        
+        // Add activity log
+        $activity = "Admin added new user " . $username . " (ID: " . $new_user_id . ")";
+        $log_query = $db->prepare("INSERT INTO user_activities (user_id, activity_type, activity_description, related_id) VALUES (:user_id, 'admin_action', :activity, :related_id)");
+        $log_query->bindValue(':user_id', $_SESSION['user_id'], SQLITE3_INTEGER);
+        $log_query->bindValue(':activity', $activity, SQLITE3_TEXT);
+        $log_query->bindValue(':related_id', $new_user_id, SQLITE3_INTEGER);
+        $log_query->execute();
+        
+        // Set success message and redirect
+        $_SESSION['success_message'] = "User added successfully";
+        header('Location: admin-users.php');
+        exit;
+    } else {
+        // Store errors in session to display after redirect
+        $_SESSION['errors'] = $errors;
+    }
+}
+
 // AJAX endpoint for deleting users
 if (isset($_POST['ajax_delete_user']) && isset($_POST['user_id'])) {
     $response = ['success' => false, 'message' => ''];
@@ -236,8 +319,36 @@ if (isset($_POST['edit_user']) && isset($_POST['user_id'])) {
                     <div class="md:w-3/4 md:pl-8">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="text-2xl font-bold">User Management</h2>
-                            <a href="#" class="btn btn-primary">Add New User</a>
+                            <button id="openAddUserModal" class="btn btn-primary">Add New User</button>
                         </div>
+                        
+                        <!-- Notifications -->
+                        <?php if (isset($_SESSION['success_message'])): ?>
+                            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                                <span class="block sm:inline"><?php echo $_SESSION['success_message']; ?></span>
+                                <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                                    <svg class="fill-current h-6 w-6 text-green-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+                                </span>
+                            </div>
+                            <?php unset($_SESSION['success_message']); ?>
+                        <?php endif; ?>
+                        
+                        <?php if (isset($_SESSION['errors'])): ?>
+                            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                                <strong class="font-bold">Error!</strong>
+                                <span class="block sm:inline">
+                                    <ul class="list-disc list-inside">
+                                        <?php foreach ($_SESSION['errors'] as $error): ?>
+                                            <li><?php echo $error; ?></li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </span>
+                                <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                                    <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+                                </span>
+                            </div>
+                            <?php unset($_SESSION['errors']); ?>
+                        <?php endif; ?>
                         
                         <!-- Stats -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
@@ -447,6 +558,56 @@ if (isset($_POST['edit_user']) && isset($_POST['user_id'])) {
     <input type="hidden" name="is_admin" id="fallback_is_admin">
     <input type="hidden" name="edit_user" value="1">
 </form>
+
+<!-- Add User Modal -->
+<div id="addUserModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-semibold">Add New User</h3>
+            <button id="closeAddUserModal" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <form id="addUserForm" action="admin-users.php" method="POST">
+            <input type="hidden" name="add_user" value="1">
+            
+            <div class="mb-4">
+                <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                <input type="text" id="username" name="username" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+            
+            <div class="mb-4">
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input type="email" id="email" name="email" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+            
+            <div class="mb-4">
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <input type="password" id="password" name="password" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+            
+            <div class="mb-4">
+                <label for="confirm_password" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+            
+            <div class="mb-4">
+                <label class="flex items-center">
+                    <input type="checkbox" name="is_admin" value="1" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                    <span class="ml-2 text-sm text-gray-700">Make this user an admin</span>
+                </label>
+            </div>
+            
+            <div class="flex justify-end space-x-2">
+                <button type="button" id="cancelAddUser" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md text-gray-800">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-primary hover:bg-primary-dark rounded-md text-white">Add User</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <!-- JavaScript for Modal and Delete -->
 <script>
@@ -733,6 +894,60 @@ if (isset($_POST['edit_user']) && isset($_POST['user_id'])) {
                 } else {
                     modal.querySelector('.bg-white').style.marginTop = '2rem';
                 }
+            }
+        });
+
+        // Alert dismissal
+        const alerts = document.querySelectorAll('.bg-green-100, .bg-red-100');
+        alerts.forEach(alert => {
+            const closeButton = alert.querySelector('svg[role="button"]');
+            if (closeButton) {
+                closeButton.addEventListener('click', function() {
+                    alert.style.display = 'none';
+                });
+            }
+        });
+    });
+
+    // Add User Modal Functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const openAddUserModal = document.getElementById('openAddUserModal');
+        const closeAddUserModal = document.getElementById('closeAddUserModal');
+        const cancelAddUser = document.getElementById('cancelAddUser');
+        const addUserModal = document.getElementById('addUserModal');
+        const addUserForm = document.getElementById('addUserForm');
+        
+        // Open modal
+        openAddUserModal.addEventListener('click', function() {
+            addUserModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        });
+        
+        // Close modal functions
+        function closeModal() {
+            addUserModal.classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Re-enable scrolling
+            addUserForm.reset(); // Reset form fields
+        }
+        
+        closeAddUserModal.addEventListener('click', closeModal);
+        cancelAddUser.addEventListener('click', closeModal);
+        
+        // Close when clicking outside the modal
+        addUserModal.addEventListener('click', function(e) {
+            if (e.target === addUserModal) {
+                closeModal();
+            }
+        });
+        
+        // Password validation
+        addUserForm.addEventListener('submit', function(e) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('Passwords do not match!');
             }
         });
     });

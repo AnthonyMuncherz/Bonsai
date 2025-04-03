@@ -92,20 +92,20 @@ while ($row = $order_stats_query->fetchArray(SQLITE3_ASSOC)) {
                         <!-- Order Statistics -->
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
                             <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
-                                <h3 class="font-semibold text-blue-800">Total Orders</h3>
-                                <p class="text-3xl font-bold text-blue-600"><?php echo array_sum($order_stats); ?></p>
+                                <h3 class="font-semibold text-blue-800 text-sm">Total Orders</h3>
+                                <p class="text-2xl font-bold text-blue-600"><?php echo array_sum($order_stats); ?></p>
                             </div>
                             <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-100">
-                                <h3 class="font-semibold text-yellow-800">Pending</h3>
-                                <p class="text-3xl font-bold text-yellow-600"><?php echo $order_stats['pending'] ?? 0; ?></p>
+                                <h3 class="font-semibold text-yellow-800 text-sm">Pending</h3>
+                                <p class="text-2xl font-bold text-yellow-600"><?php echo $order_stats['pending'] ?? 0; ?></p>
                             </div>
                             <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100">
-                                <h3 class="font-semibold text-indigo-800">Processing</h3>
-                                <p class="text-3xl font-bold text-indigo-600"><?php echo $order_stats['processing'] ?? 0; ?></p>
+                                <h3 class="font-semibold text-indigo-800 text-sm">Processing</h3>
+                                <p class="text-2xl font-bold text-indigo-600"><?php echo $order_stats['processing'] ?? 0; ?></p>
                             </div>
                             <div class="bg-green-50 p-4 rounded-lg border border-green-100">
-                                <h3 class="font-semibold text-green-800">Shipped/Delivered</h3>
-                                <p class="text-3xl font-bold text-green-600"><?php echo ($order_stats['shipped'] ?? 0) + ($order_stats['delivered'] ?? 0); ?></p>
+                                <h3 class="font-semibold text-green-800 text-sm truncate">Shipped/Delivered</h3>
+                                <p class="text-2xl font-bold text-green-600"><?php echo ($order_stats['shipped'] ?? 0) + ($order_stats['delivered'] ?? 0); ?></p>
                             </div>
                         </div>
                         

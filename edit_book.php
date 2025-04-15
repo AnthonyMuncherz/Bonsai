@@ -39,6 +39,10 @@ $price = $book['price'];
 $category = $book['category'];
 $stock = $book['stock'];
 $current_image = $book['image'];
+$publisher = $book['publisher'] ?? '';
+$isbn = $book['isbn'] ?? '';
+$pages = $book['pages'] ?? '';
+$published_year = $book['published_year'] ?? '';
 $errors = [];
 $success_message = '';
 
@@ -51,6 +55,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $price = trim($_POST['price'] ?? '');
     $category = trim($_POST['category'] ?? '');
     $stock = trim($_POST['stock'] ?? '');
+    $publisher = trim($_POST['publisher'] ?? '');
+    $isbn = trim($_POST['isbn'] ?? '');
+    $pages = trim($_POST['pages'] ?? '');
+    $published_year = trim($_POST['published_year'] ?? '');
     
     // Use new category if provided
     if (isset($_POST['new_category']) && !empty($_POST['new_category']) && $_POST['category'] === 'other') {
@@ -80,6 +88,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if (!isset($stock) || !is_numeric($stock) || $stock < 0) {
         $errors[] = 'Valid stock quantity is required';
+    }
+    
+    // Validate new fields
+    if (empty($publisher)) {
+        $errors[] = 'Publisher is required';
+    }
+    
+    if (empty($isbn)) {
+        $errors[] = 'ISBN is required';
+    }
+    
+    if (empty($pages) || !is_numeric($pages) || $pages <= 0) {
+        $errors[] = 'Valid page count is required';
+    }
+    
+    if (empty($published_year) || !is_numeric($published_year) || $published_year <= 0) {
+        $errors[] = 'Valid publication year is required';
     }
     
     // Handle file upload if a new image is provided
@@ -122,7 +147,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             price = :price, 
             image = :image, 
             category = :category, 
-            stock = :stock
+            stock = :stock,
+            publisher = :publisher,
+            isbn = :isbn,
+            pages = :pages,
+            published_year = :published_year
             WHERE id = :book_id
         ");
         
@@ -133,6 +162,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $query->bindValue(':image', $image_name, SQLITE3_TEXT);
         $query->bindValue(':category', $category, SQLITE3_TEXT);
         $query->bindValue(':stock', $stock, SQLITE3_INTEGER);
+        $query->bindValue(':publisher', $publisher, SQLITE3_TEXT);
+        $query->bindValue(':isbn', $isbn, SQLITE3_TEXT);
+        $query->bindValue(':pages', $pages, SQLITE3_INTEGER);
+        $query->bindValue(':published_year', $published_year, SQLITE3_INTEGER);
         $query->bindValue(':book_id', $book_id, SQLITE3_INTEGER);
         
         $result = $query->execute();
@@ -162,6 +195,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $category = $book['category'];
             $stock = $book['stock'];
             $current_image = $book['image'];
+            $publisher = $book['publisher'];
+            $isbn = $book['isbn'];
+            $pages = $book['pages'];
+            $published_year = $book['published_year'];
         } else {
             $errors[] = 'Failed to update book. Please try again.';
         }
@@ -325,6 +362,26 @@ if (empty($categories)) {
                             <label for="stock" class="block text-sm font-medium text-gray-700 mb-1">Stock Quantity <span class="text-red-500">*</span></label>
                             <input type="number" name="stock" id="stock" value="<?php echo htmlspecialchars($stock); ?>" min="0" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary" required>
                         </div>
+                    </div>
+                    
+                    <div>
+                        <label for="publisher" class="block text-sm font-medium text-gray-700 mb-1">Publisher <span class="text-red-500">*</span></label>
+                        <input type="text" name="publisher" id="publisher" value="<?php echo htmlspecialchars($publisher); ?>" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary" required>
+                    </div>
+                    
+                    <div>
+                        <label for="isbn" class="block text-sm font-medium text-gray-700 mb-1">ISBN <span class="text-red-500">*</span></label>
+                        <input type="text" name="isbn" id="isbn" value="<?php echo htmlspecialchars($isbn); ?>" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary" required>
+                    </div>
+                    
+                    <div>
+                        <label for="pages" class="block text-sm font-medium text-gray-700 mb-1">Pages <span class="text-red-500">*</span></label>
+                        <input type="number" name="pages" id="pages" value="<?php echo htmlspecialchars($pages); ?>" min="0" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary" required>
+                    </div>
+                    
+                    <div>
+                        <label for="published_year" class="block text-sm font-medium text-gray-700 mb-1">Published Year <span class="text-red-500">*</span></label>
+                        <input type="number" name="published_year" id="published_year" value="<?php echo htmlspecialchars($published_year); ?>" min="0" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary" required>
                     </div>
                     
                     <div>

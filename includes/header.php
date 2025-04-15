@@ -10,6 +10,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="format-detection" content="telephone=no">
     <title><?php echo isset($page_title) ? $page_title . ' | ' : ''; ?>SEJUTA RANTING</title>
+    <?php if(isset($custom_meta)) echo $custom_meta; ?>
+    <?php if(isset($custom_style)) echo $custom_style; ?>
     <link rel="icon" href="/Bonsai/Images/Index/Sejuta Ranting.png" type="image/x-icon">
     <!-- Google Fonts -->
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400&amp;family=Volkhov:wght@400;700&amp;display=swap">
@@ -146,6 +148,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         <a href="portfolio.php" class="<?php echo $current_page == 'portfolio.php' ? 'text-primary font-bold' : 'hover:text-primary'; ?>">
                             Collection
                         </a>
+                        <a href="documentary.php" class="<?php echo $current_page == 'documentary.php' ? 'text-primary font-bold' : 'hover:text-primary'; ?>">
+                            Documentary
+                        </a>
                         <?php if(isset($_SESSION['user_id'])): ?>
                         <a href="catalogue.php" class="<?php echo $current_page == 'catalogue.php' ? 'text-primary font-bold' : 'hover:text-primary'; ?>">
                             Catalogue
@@ -207,6 +212,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         </div>
                         <a href="portfolio.php" class="<?php echo $current_page == 'portfolio.php' ? 'text-primary font-bold' : ''; ?> py-2">
                             Collection
+                        </a>
+                        <a href="documentary.php" class="<?php echo $current_page == 'documentary.php' ? 'text-primary font-bold' : ''; ?> py-2">
+                            Documentary
                         </a>
                         <?php if(isset($_SESSION['user_id'])): ?>
                         <a href="catalogue.php" class="<?php echo $current_page == 'catalogue.php' ? 'text-primary font-bold' : ''; ?> py-2">

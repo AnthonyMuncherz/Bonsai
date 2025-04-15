@@ -75,8 +75,35 @@ require_once 'components/project-card.php';
     </div>
 </section>
 
-<!-- About Section -->
+<!-- Documentary Section -->
 <section class="bg-secondary py-16 md:py-24">
+    <div class="container mx-auto">
+        <div class="flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-8 md:mb-0" data-aos="fade-right" data-aos-duration="1000">
+                <div class="rounded-lg overflow-hidden shadow-xl">
+                    <img src="/Bonsai/Images/Index/IMG_6169.JPG" alt="Bonsai Documentary" class="w-full h-auto">
+                </div>
+            </div>
+            <div class="md:w-1/2 md:pl-12" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+                <span class="text-primary font-semibold uppercase tracking-wider">FEATURED</span>
+                <h2 class="text-3xl md:text-4xl font-bold mt-2 mb-4 text-dark-olive">Bonsai Documentary</h2>
+                <p class="mb-6 text-olive-dark">
+                    Immerse yourself in the ancient and fascinating world of bonsai through our exclusive documentary. Learn about the history, techniques, and cultural significance of this beautiful art form. Perfect for beginners and enthusiasts alike.
+                </p>
+                <a href="documentary.php" class="btn btn-primary inline-flex items-center">
+                    Watch Documentary
+                    <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="py-16 md:py-24">
     <div class="container mx-auto">
         <div class="flex flex-col md:flex-row">
             <div class="md:w-1/2 mb-8 md:mb-0" data-aos="zoom-in-right" data-aos-duration="1000">
